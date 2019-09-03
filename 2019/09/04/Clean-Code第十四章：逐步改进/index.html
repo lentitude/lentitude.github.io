@@ -79,21 +79,21 @@
 
 
 
-<meta name="description" content="这个章节主要是以作者本身写的一段命令行解析器的代码来展示代码优化的过程。还是可以学到很多东西的。重构的流程：  对一个命令行参数解析程序的案例研究。整体流程如下图所示， 处理主要分为两个部分：   Schema  ArgumentString">
+<meta name="description" content="这个章节主要是以作者本身写的一段命令行解析器的代码来展示代码优化的过程。还是可以学到很多东西的。重构的流程。">
 <meta name="keywords" content="Clean Code">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Clean Code第十四章-逐步改进">
 <meta property="og:url" content="http://yoursite.com/2019/09/04/Clean-Code第十四章：逐步改进/index.html">
 <meta property="og:site_name" content="Lentitude-胡叙双">
-<meta property="og:description" content="这个章节主要是以作者本身写的一段命令行解析器的代码来展示代码优化的过程。还是可以学到很多东西的。重构的流程：  对一个命令行参数解析程序的案例研究。整体流程如下图所示， 处理主要分为两个部分：   Schema  ArgumentString">
+<meta property="og:description" content="这个章节主要是以作者本身写的一段命令行解析器的代码来展示代码优化的过程。还是可以学到很多东西的。重构的流程。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%B5%81%E7%A8%8B.png">
-<meta property="og:image" content="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%8B%86%E5%88%86.png">
-<meta property="og:updated_time" content="2019-09-03T16:27:05.932Z">
+<meta property="og:image" content="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%B5%81%E7%A8%8B.png?raw=true">
+<meta property="og:image" content="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%8B%86%E5%88%86.png?raw=true">
+<meta property="og:updated_time" content="2019-09-03T16:34:00.172Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Clean Code第十四章-逐步改进">
-<meta name="twitter:description" content="这个章节主要是以作者本身写的一段命令行解析器的代码来展示代码优化的过程。还是可以学到很多东西的。重构的流程：  对一个命令行参数解析程序的案例研究。整体流程如下图所示， 处理主要分为两个部分：   Schema  ArgumentString">
-<meta name="twitter:image" content="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%B5%81%E7%A8%8B.png">
+<meta name="twitter:description" content="这个章节主要是以作者本身写的一段命令行解析器的代码来展示代码优化的过程。还是可以学到很多东西的。重构的流程。">
+<meta name="twitter:image" content="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%B5%81%E7%A8%8B.png?raw=true">
 
 
 
@@ -418,18 +418,18 @@
       
 
       
-        <p>这个章节主要是以作者本身写的一段命令行解析器的代码来展示代码优化的过程。还是可以学到很多东西的。重构的流程： </p>
+        <p>这个章节主要是以作者本身写的一段命令行解析器的代码来展示代码优化的过程。还是可以学到很多东西的。重构的流程。</p>
+<a id="more"></a>
 <p>对一个命令行参数解析程序的案例研究。整体流程如下图所示， 处理主要分为两个部分： </p>
 <ol>
 <li>Schema </li>
 <li>ArgumentString </li>
 </ol>
-<a id="more"></a>
 <p>Schema 相当于预先设定解析器逻辑， 通过预设格式化字符串来设定处理逻辑， 将第一个字符作为标识， 其他字段绑定对应功能的编译器。 </p>
 <p>ArgumentString 为执行 JAVA脚本时输入的命令行， 通过解析对应的字符， 来设定解析其后的值， 其他一个命令行解析的作用。 </p>
-<p><img src="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%B5%81%E7%A8%8B.png" alt="未知.png"></p>
+<p><img src="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%B5%81%E7%A8%8B.png?raw=true" alt="未知.png"></p>
 <p>如下图是整个命令行解析的继承关系， 都实现了其中的 ArgumentMarshaler 接口。ArgumentMarshaler 作为继承解析器接口，只是定义了一个 set 方法， 主要是派生类来完成对各个类型数据的解析实现，而且针对 </p>
-<p><img src="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%8B%86%E5%88%86.png" alt="未知_1.png"></p>
+<p><img src="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%8B%86%E5%88%86.png?raw=true" alt="未知_1.png"></p>
 <p>后续如果需要新增命令行的解析字符类型的话， 只需要在如下内容中进行添加： </p>
 <ol>
 <li><p>Schema 中加入对应字符 </p>
