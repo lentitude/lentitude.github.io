@@ -89,7 +89,10 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%B5%81%E7%A8%8B.png?raw=true">
 <meta property="og:image" content="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%8B%86%E5%88%86.png?raw=true">
-<meta property="og:updated_time" content="2019-09-03T17:20:52.611Z">
+<meta property="og:image" content="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E9%94%99%E8%AF%AF%E5%86%99%E6%B3%95.png?raw=true">
+<meta property="og:image" content="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%94%B9%E8%BF%9B.png?raw=true">
+<meta property="og:image" content="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/HashMap%E7%9A%84%E4%BC%98%E5%8C%96.png?raw=true">
+<meta property="og:updated_time" content="2019-09-03T17:49:29.835Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Clean Code第十四章-逐步改进">
 <meta name="twitter:description" content="这个章节主要是以作者本身写的一段命令行解析器的代码来展示代码优化的过程。还是可以学到很多东西的。重构的流程。">
@@ -381,7 +384,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  942 字
+                  1,103 字
                 </span>
               
 
@@ -397,7 +400,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3 分钟
+                  4 分钟
                 </span>
               
             </div>
@@ -445,9 +448,21 @@
 <li>开始小规模的更改， 每次修改将结构<strong>往 ArgumentMarshaler 推动</strong>，使用UT确保流程正常</li>
 <li>使用 HashMap 来做对应的字符与解析对象的映射。 这里作者通过发现了一个问题， 也是在之前Clean Code中强调的一个问题， 不过针对多个方法的连续调用， 比如如下报错， 很难鉴定具体是哪个调用引发的报错。</li>
 </ol>
-<p>![错误][<a href="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E9%94%99%E8%AF%AF%E5%86%99%E6%B3%95.png?raw=true]" target="_blank" rel="noopener">https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E9%94%99%E8%AF%AF%E5%86%99%E6%B3%95.png?raw=true]</a></p>
-<p>然后作者对这个进行了拆分， 并加入了对应的非空判断。</p>
-<p>![改进][<a href="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%94%B9%E8%BF%9B.png?raw=true]" target="_blank" rel="noopener">https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%94%B9%E8%BF%9B.png?raw=true]</a></p>
+<p><img src="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E9%94%99%E8%AF%AF%E5%86%99%E6%B3%95.png?raw=true" alt="错误"></p>
+<p>​                然后作者对这个进行了拆分， 并加入了对应的非空判断。</p>
+<p><img src="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%94%B9%E8%BF%9B.png?raw=true" alt="改进"></p>
+<ol start="3">
+<li>针对编组的操作， 一开始是都放在 ArgumentMarshaler 中， 之后逐步往对应的派生类中移动， 如果在派生类中测试通过， 逐步移除基类中的具体方法， 转而只剩下对应的抽象方法，这样将具体的实现方法下沉到对应的实现类中。</li>
+<li>将整体代码向 ArgumentMarshaler 方向推动， 减少冗余和强依赖。</li>
+</ol>
+<p><img src="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/HashMap%E7%9A%84%E4%BC%98%E5%8C%96.png?raw=true" alt="去除冗余"></p>
+<ol start="5">
+<li>将对应的 set、get方法都推动处理之后， 开始移动错误码异常移动到对应的模块中， 将异常和错误码文件从流程中单独剥离出来。</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>优秀的代码：创建合适的空间放置不同种类的代码， 对关注面的隔离方便让代码更容易理解和维护。</li>
+<li>保证代码持续的整洁和简单， 不要等到互相渗透难于拆分的地步。</li>
+</ol>
 
       
     </div>
@@ -625,7 +640,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#最终实现"><span class="nav-number">1.</span> <span class="nav-text">最终实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最初"><span class="nav-number">2.</span> <span class="nav-text">最初</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改进"><span class="nav-number">3.</span> <span class="nav-text">改进</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#最终实现"><span class="nav-number">1.</span> <span class="nav-text">最终实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最初"><span class="nav-number">2.</span> <span class="nav-text">最初</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改进"><span class="nav-number">3.</span> <span class="nav-text">改进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -659,7 +674,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">38.6k</span>
+    <span title="Site words total count">38.8k</span>
   
 </div>
 
