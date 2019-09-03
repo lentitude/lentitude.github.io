@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%B5%81%E7%A8%8B.png?raw=true">
 <meta property="og:image" content="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%8B%86%E5%88%86.png?raw=true">
-<meta property="og:updated_time" content="2019-09-03T16:34:00.172Z">
+<meta property="og:updated_time" content="2019-09-03T17:20:52.611Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Clean Code第十四章-逐步改进">
 <meta name="twitter:description" content="这个章节主要是以作者本身写的一段命令行解析器的代码来展示代码优化的过程。还是可以学到很多东西的。重构的流程。">
@@ -381,7 +381,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  450 字
+                  942 字
                 </span>
               
 
@@ -397,7 +397,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -420,24 +420,34 @@
       
         <p>这个章节主要是以作者本身写的一段命令行解析器的代码来展示代码优化的过程。还是可以学到很多东西的。重构的流程。</p>
 <a id="more"></a>
-<p>对一个命令行参数解析程序的案例研究。整体流程如下图所示， 处理主要分为两个部分： </p>
+<h3 id="最终实现"><a href="#最终实现" class="headerlink" title="最终实现"></a>最终实现</h3><p>对一个命令行参数解析程序的案例研究。整体流程如下图所示， 处理主要分为两个部分： </p>
 <ol>
-<li>Schema </li>
-<li>ArgumentString </li>
+<li><p>Schema </p>
+</li>
+<li><p>ArgumentString </p>
+</li>
 </ol>
 <p>Schema 相当于预先设定解析器逻辑， 通过预设格式化字符串来设定处理逻辑， 将第一个字符作为标识， 其他字段绑定对应功能的编译器。 </p>
 <p>ArgumentString 为执行 JAVA脚本时输入的命令行， 通过解析对应的字符， 来设定解析其后的值， 其他一个命令行解析的作用。 </p>
 <p><img src="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%B5%81%E7%A8%8B.png?raw=true" alt="未知.png"></p>
-<p>如下图是整个命令行解析的继承关系， 都实现了其中的 ArgumentMarshaler 接口。ArgumentMarshaler 作为继承解析器接口，只是定义了一个 set 方法， 主要是派生类来完成对各个类型数据的解析实现，而且针对 </p>
+<p>如下图是整个命令行解析的继承关系， 都实现了其中的 ArgumentMarshaler 接口。ArgumentMarshaler 作为继承解析器接口，只是定义了一个 set 方法， 主要是派生类来完成对各个类型数据的解析实现。 </p>
 <p><img src="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%8B%86%E5%88%86.png?raw=true" alt="未知_1.png"></p>
-<p>后续如果需要新增命令行的解析字符类型的话， 只需要在如下内容中进行添加： </p>
+<p>针对后续如果需要新增命令行的解析字符类型的话， 只需要在如下内容中进行添加： </p>
 <ol>
-<li><p>Schema 中加入对应字符 </p>
-</li>
-<li><p>新的解析类型实现ArgumentMarshaler 接口， 并与标识字符进行绑定 </p>
-</li>
+<li>Schema 中加入对应字符 </li>
+<li>新的解析类型实现ArgumentMarshaler 接口， 并与标识字符进行绑定 </li>
 </ol>
-<p>但是作者在前期也只是实现了一个可以运行功能的方法， 并没有对各类型的功能方法进行拆分， 比如不同类型的校验接口、 处理接口、异常处理，所有的方法处理都放到同一个类里面来实现功能。当然， 在最初版本的时候， 代码也不会出现这么不清楚的情况，都是在后续的代码演进过程中方法逐步变得冗余。 </p>
+<h3 id="最初"><a href="#最初" class="headerlink" title="最初"></a>最初</h3><p>但是作者在前期也只是实现了一个可以运行功能的方法， 并没有对各类型的功能方法进行拆分， 比如不同类型的校验接口、 处理接口、异常处理，所有的方法处理都放到同一个类里面来实现功能。</p>
+<p>代码的冗余和结果杂乱往往不是一开始的结果， 更多的情况是最初应付的场景很少， 比如最初只需要处理一个Boolean 取值， 那最初的编写虽然将所有用到的方法放到同一个类中， 但针对这个场景虽然没有处理好结构， 但阅也是便于理解的。当场景变得复杂， 需要支持多个类型的时候问题就会凸显出来， 代码就会变得不好维护。原因在与没有好的一个代码结构，而且没有将代码中涉及到的同级对象或者操作进行分类。</p>
+<p>这时候就会发现， 每针对一个类型我们要添加的内容基本都是固定的， 在Schema 中加入对应的字符标识、在 HashMap 中添加对应的实现对象， 在类中添加对应的 set方法， 可以想到用接口的多态来完成新增类型的控制， 为此加入了 ArgumentMarshaler 接口。</p>
+<h3 id="改进"><a href="#改进" class="headerlink" title="改进"></a>改进</h3><p>加入 ArgumentMarshaler 接口也就意味着需要将原本集成在同一个类中的方法进行拆分为同级的类， 针对类中结构的变化， <strong>往往需要 UT来确认流程的正确</strong>， 避免修改引入问题</p>
+<ol>
+<li>开始小规模的更改， 每次修改将结构<strong>往 ArgumentMarshaler 推动</strong>，使用UT确保流程正常</li>
+<li>使用 HashMap 来做对应的字符与解析对象的映射。 这里作者通过发现了一个问题， 也是在之前Clean Code中强调的一个问题， 不过针对多个方法的连续调用， 比如如下报错， 很难鉴定具体是哪个调用引发的报错。</li>
+</ol>
+<p>![错误][<a href="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E9%94%99%E8%AF%AF%E5%86%99%E6%B3%95.png?raw=true]" target="_blank" rel="noopener">https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E9%94%99%E8%AF%AF%E5%86%99%E6%B3%95.png?raw=true]</a></p>
+<p>然后作者对这个进行了拆分， 并加入了对应的非空判断。</p>
+<p>![改进][<a href="https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%94%B9%E8%BF%9B.png?raw=true]" target="_blank" rel="noopener">https://github.com/lentitude/BlogResource/blob/master/14%20%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/%E6%94%B9%E8%BF%9B.png?raw=true]</a></p>
 
       
     </div>
@@ -533,8 +543,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -597,6 +616,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#最终实现"><span class="nav-number">1.</span> <span class="nav-text">最终实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最初"><span class="nav-number">2.</span> <span class="nav-text">最初</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改进"><span class="nav-number">3.</span> <span class="nav-text">改进</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -624,7 +659,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">38.2k</span>
+    <span title="Site words total count">38.6k</span>
   
 </div>
 
