@@ -417,28 +417,19 @@
 
       
         
-          
-            <p>这个章节主要是以作者本身写的一段命令行解析器的代码来展示代码优化的过程。还是可以学到很多东西的。重构的流程： </p>
+          <p>这个章节主要是以作者本身写的一段命令行解析器的代码来展示代码优化的过程。还是可以学到很多东西的。重构的流程： </p>
 <p>对一个命令行参数解析程序的案例研究。整体流程如下图所示， 处理主要分为两个部分： </p>
 <ol>
 <li>Schema </li>
 <li>ArgumentString </li>
 </ol>
-<p>Schema 相当于预先设定解析器逻辑， 通过预设格式化字符串来设定处理逻辑， 将第一个字符作为标识， 其他字段绑定对应功能的编译器。 </p>
-<p>ArgumentString 为执行 JAVA脚本时输入的命令行， 通过解析对应的字符， 来设定解析其后的值， 其他一个命令行解析的作用。 </p>
-<p><img src="/.com//Macintosh HD 1/Blog/blog/source/_posts/Clean-Code第十四章：逐步改进/解析流程.png" alt="未知.png"></p>
-<p>如下图是整个命令行解析的继承关系， 都实现了其中的 ArgumentMarshaler 接口。ArgumentMarshaler 作为继承解析器接口，只是定义了一个 set 方法， 主要是派生类来完成对各个类型数据的解析实现，而且针对 </p>
-<p><img src="/.com//Macintosh HD 1/Blog/blog/source/_posts/Clean-Code第十四章：逐步改进/分解.png" alt="未知_1.png"></p>
-<p>后续如果需要新增命令行的解析字符类型的话， 只需要在如下内容中进行添加： </p>
-<ol>
-<li><p>Schema 中加入对应字符 </p>
-</li>
-<li><p>新的解析类型实现ArgumentMarshaler 接口， 并与标识字符进行绑定 </p>
-</li>
-</ol>
-<p>但是作者在前期也只是实现了一个可以运行功能的方法， 并没有对各类型的功能方法进行拆分， 比如不同类型的校验接口、 处理接口、异常处理，所有的方法处理都放到同一个类里面来实现功能。当然， 在最初版本的时候， 代码也不会出现这么不清楚的情况，都是在后续的代码演进过程中方法逐步变得冗余。 </p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/04/Clean-Code第十四章：逐步改进/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2193,7 +2184,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">38.2k</span>
+    <span title="Site words total count">38.1k</span>
   
 </div>
 
