@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="念起即觉, 觉己不随">
+  <meta name="author" content="胡叙双">
+  <meta name="keywords" content>
+  <title>关联规则—频繁项集Apriori算法 - Lentitude-胡叙双</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<!-- 自定义样式保持在最底部 -->
+
+
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Lentitude-胡叙双</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <p class="mt-3 post-meta">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                  星期一, 一月 15日 2018, 11:17 上午
+                </p>
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    5.8k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      25 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <div class="markdown-body">
+              <p>因为毕设需要，第一个版本中需要获取评论中的频繁集，对 Apriori 算法进行了了解，有助于开展工作。</p>
+<a id="more"></a>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>频繁模式和对应的关联或相关规则在一定程度上刻画了属性条件与类标号之间的有趣联系，因此将关联规则挖掘用于分类也会产生比较好的效果。</p>
+<p>关联规则就是在给定训练项集上频繁出现的项集与项集之间的一种紧密的联系。其中“频繁”是由人为设定的一个阈值即支持度 （support）来衡量，“紧密”也是由人为设定的一个关联阈值即置信度（confidence）来衡量的。这两种度量标准是频繁项集挖掘中两个至关重 要的因素，也是挖掘算法的关键所在。对项集支持度和规则置信度的计算是影响挖掘算法效率的决定性因素，也是对频繁项集挖掘进行改进的入口点和研究热点。</p>
+<p>基于关联规则的分类主要分为以下以个步骤：</p>
+<ol>
+<li>对训练数据进行预处理（包括离散化、缺失值处理等） </li>
+<li>关联规则挖掘<br>2.1  频繁项集挖掘<br>2.2  关联规则生成 </li>
+<li>规则处理</li>
+<li>对测试集进行测试</li>
+</ol>
+<h3 id="频繁项集挖掘"><a href="#频繁项集挖掘" class="headerlink" title="频繁项集挖掘"></a>频繁项集挖掘</h3><p>目前频繁项集挖掘已经有很多比较成熟的算法，在网上也可以找到相关的优秀论文或源代码。算法中最经典的莫过于Apriori算法，它可以算得上是频 繁项集挖掘算法的鼻祖，后续很多的改进算法也是基于Apriori算法的。但是遗憾的是Apriori算法的性能实在不咋的，当当玩具玩玩还可以，但是即 使如此，该算法却是频繁项集挖掘必须要掌握的入门算法。<br>题外话：关健是要了解算法的思想，你可以不了解一个东西是怎样具体实现的，但是一定得了解它是如何出来的。这样遇到相关的问题，你可以有一个参考的 解决方法，或者在关键时刻可以跟别人忽悠忽悠。当然，了解思想的最佳途径就是自己动手去实现实现了，哪怕实现得不咋样，起码思想掌握了，也是个不小的收 获。<br>下面就要具体介绍如何利用Apriori算法进行频繁项集挖掘了。</p>
+<p>（1）相关概念<br>项集：“属性-值”对的集合，一般情况下在实际操作中会省略属性。<br>候选项集：用来获取频繁项集的候选项集，候选项集中满足支持度条件的项集保留，不满足条件的舍弃。<br>频繁项集：在所有训练元组中同时出现的次数超过人工定义的阈值的项集称为频繁项集。<br>极大频繁项集：不存在包含当前频繁项集的频繁超集，则当前频繁项集就是极大频繁项集。<br>支持度：项集在所有训练元组中同时出现的次数。<br>置信度：形如A-&gt;B，置信度为60%表示60%的A出现的同时也出现B。<br>k项集：项集中的每个项有k个“属性-值”对的组合。 </p>
+<p>（2）两个定理<br>i：连接定理。若有两个k-1项集，每个项集按照“属性-值”（一般按值）的字母顺序进行排序。如果两个k-1项集的前k-2个项相同，而最后一 个项不同，则证明它们是可连接的，即这个k-1项集可以联姻，即可连接生成k项集。使如有两个3项集：｛a, b, c｝{a, b, d}，这两个3项集就是可连接的，它们可以连接生成4项集｛a, b, c, d｝。又如两个3项集｛a, b, c｝｛a, d, e｝，这两个3项集显示是不能连接生成3项集的。要记住，强扭的瓜是不甜的，也结不了果的。</p>
+<p>ii：频繁子集定理。若一个项集的子集不是频繁项集，则该项集肯定也不是频繁项集。这个很好理解，举一个例子，若存在3项集｛a, b, c｝，如果它的2项子集｛a, b｝的支持度即同时出现的次数达不到阈值，则｛a, b, c｝同时出现的次数显然也是达不到阈值的。因此，若存在一个项集的子集不是频繁项集，那么该项集就应该被无情的舍弃。倘若你舍不得，那么这个项集就会无情 的影响你的效率以及处理器资源，所以在这时，你必须无情，斩立决！</p>
+<p>（3）Apriori算法流程</p>
+<ol>
+<li>扫描数据库，生成候选1项集和频繁1项集。</li>
+<li>从2项集开始循环，由频繁k-1项集生成频繁频繁k项集。<ol>
+<li>频繁k-1项集生成2项子集，这里的2项指的生成的子集中有两个k-1项集。使如有3个2项频繁集｛a, b｝｛b, c｝｛c, f｝，则它所有的2项子集为｛｛a, b｝｛b, c｝｝｛｛a, b｝｛e, f｝｝｛｛b, c｝｛c, f｝｝</li>
+<li>对由2.1生成的2项子集中的两个项集根据上面所述的定理 i 进行连接，生成k项集。</li>
+<li>对k项集中的每个项集根据如上所述的定理 ii 进行计算，舍弃掉子集不是频繁项集即不在频繁k-1项集中的项集。</li>
+<li>扫描数据库，计算2.3步中过滤后的k项集的支持度，舍弃掉支持度小于阈值的项集，生成频繁k项集。</li>
+</ol>
+</li>
+<li>当当前生成的频繁k项集中只有一个项集时循环结束。</li>
+</ol>
+<p>关联规则(Association Rules)是反映一个事物与其他事物之间的相互依存性和关联性，是数据挖掘的一个重要技术， 用于从大量数据中挖掘出有价值的数据项之间的相关关系。 其中关联规则挖掘的最经典的例子就是沃尔玛的啤酒与尿布的故事 ，通过对超市购物篮数据进行分析，即顾客放入购物篮中不同商品之间的关系来分析顾客的购物习惯，发现美国妇女们经常会叮嘱丈夫下班后为孩子买尿布，30%-40%的丈夫同时会顺便购买喜爱的啤酒，超市就把尿布和啤酒放在一起销售增加销售额。</p>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>关联规则挖掘是寻找给定数据集中项之间的有趣联系。如下图所示：</p>
+<p><img src="http://dl2.iteye.com/upload/attachment/0098/1497/6c9a996e-2fb7-35ea-bfb7-b994b74b18f7.jpg" srcset="/img/loading.gif" alt></p>
+<p>其中，I={I1,I2,…Im}是m个不同项目的集合,集合中的元素称为项目（Item）。项目的集合I称为项目集合（Itemset），长度为k的项集成为k-项集。设任务相关的数据D是数据库事务的集合，其中每个事务T是项的集合，使得 T ⊆ I 。每个事务有一个标识符TID；设A是一个项集，事务T包含A当且仅当 A⊆I ，则关联规则形式为A=&gt;B（其中 A ⊂ I ， B ⊂ I ，并且 A ∩ B = ∅）。</p>
+<p>在关联规则度量中有两个重要的度量值：支持度和置信度 。对于关联规则R:A=&gt;B，则： </p>
+<ol>
+<li>支持度（suppport ）： 是交易集中同时包含A和B的交易数与所有交易数之比。<br>Support(A=&gt;B)=P(A∪B)=count(A∪B)/|D| </li>
+<li>置信度（confidence ）： 是包含A和B交易数与包含A的交易数之比。<br>Confidence(A=&gt;B)=P(B|A)=support(A∪B)/support(</li>
+</ol>
+<p><img src="http://dl2.iteye.com/upload/attachment/0098/1499/4979eeb5-cfc9-38bb-8dd6-145af2e80704.jpg" srcset="/img/loading.gif" alt></p>
+<p>如上图中数据库D，包含4个事务，项集I={I1,I2,I3,I4,I5}，分析关联规则：I1=&gt;I4，事务1、4包含I1，事务4同时包含I1和I4。<br>支持度support=1/4=25%（1个事务同时包含I1和I4,共有4个事务）指 在所有交易记录中有25%的交易记录同时包含I1和I4项目<br>置信度confidence=1/2=50%（1个事务同时包含I1和I4,2个事务包含I1）指 50%的顾客在购买I1时同时还会购买I4 </p>
+<p>使用关联规则对购物篮进行挖掘，通常采用两个步骤进行： 下面将通超市购物的例子对关联规则挖掘进行分析。<br>a.找出所有频繁项集（文章中我使用Apriori算法&gt;=最小支持度的项集）<br>b.由频繁项集产生强关联规则（&gt;=最小支持度和最小置信度）</p>
+<h3 id="Apriori算法挖掘频繁项集"><a href="#Apriori算法挖掘频繁项集" class="headerlink" title="Apriori算法挖掘频繁项集"></a>Apriori算法挖掘频繁项集</h3><p>Apriori算法是一种对有影响的挖掘布尔关联规则频繁项集的算法，通过算法的连接和剪枝即可挖掘频繁项集。 补充频繁项集相关知识： K-项集：指包含K个项的项集； 项集的出现频率：指包含项集的事务数，简称为项集的频率、支持度计数或计数； 频繁项集：如果项集的出现频率大于或等于最小支持度计数阈值，则称它为频繁项集，其中频繁K-项集的集合通常记作L k 。</p>
+<p>下面直接通过例子描述该算法：如下图所示（<strong>注意Items已经排好序</strong>），使用Apriori算法关联规则挖掘数据集中的频繁项集。（最小支持度技术为2）</p>
+<p><img src="http://dl2.iteye.com/upload/attachment/0098/1501/3642afe9-9c7a-30ad-a0a7-24bb4cced696.jpg" srcset="/img/loading.gif" alt></p>
+<p>具体过程如下所示： </p>
+<p><img src="http://dl2.iteye.com/upload/attachment/0098/1503/02733277-d228-3613-87a5-e2792dc2719e.jpg" srcset="/img/loading.gif" alt></p>
+<p>具体分析结果：<br>第一次扫描：对每个候选商品计数得C1，由于候选{D}支持度计数为1&lt;最小支持度计数2，故删除{D}得频繁1-项集合L1； </p>
+<p>第二次扫描：由L1产生候选C2并对候选计数得C2，比较候选支持度计数与最小支持度计数2得频繁2-项集合L2； </p>
+<p>2.剪枝：</p>
+<p> {A,B,C}的2项子集{A,B},{A,C}和{B,C}，其中{A,B}不是 2项子集L2,因此不是频繁的，从C3中删除； </p>
+<p>{A,C,E}的2项子集{A,C},{A,E}和{C,E}，其中{A,E}不是2项子集L2，因此不是频繁的，从C3中删除； </p>
+<p>{B,C,E}的2项子集{B,C},{B,E}和{C,E}，它的所有2项子集都是L2的元素，保留C3中. </p>
+<p>经过Apriori算法对L2连接和剪枝后产生候选3项集的集合为C3={B,C,E}. 在对该候选商品计数，由于等于最小支持度计数2，故得频繁3-项集合L3，同时由于4-项集中仅1个，故C4为空集，算法终止。</p>
+<h3 id="频繁项集产生强关联规则"><a href="#频繁项集产生强关联规则" class="headerlink" title="频繁项集产生强关联规则"></a>频繁项集产生强关联规则</h3><p>强关联规则是指：如果规则R：X=&gt;Y满足support(X=&gt;Y)&gt;=supmin(最小支持度，它 用于衡量规则需要满足的最低重要性)且confidence(X=&gt;Y)&gt;=confmin（最小置信度，它表示关联规则需要满足的最低可靠 性）称关联规则X=&gt;Y为强关联规则，否则称关联规则X=&gt;Y为弱关联规则。</p>
+<p>例：下图是某日超市的购物记录（<strong>注意Items已经排好序</strong>），使用上面叙述的Apriori算法实现了挖掘频繁项集，其中频繁项集I={i1,i2,i5}为频繁3-项集合L3，求由I产生哪些强关联规则？（最小支持度阈值为20%，最小置信度阈值为80%）</p>
+<p><img src="http://dl2.iteye.com/upload/attachment/0098/1505/962a36ba-a667-3adc-8bf9-2f99d9620eb2.jpg" srcset="/img/loading.gif" alt></p>
+<p>I的非空子集有{i1,i2}、{i1,i5}、{i2,i5}、{i1}、{i2}和{i5}。<br>结果关联规则如下，每个都列出置信度<br>1).i1 ∧i2=&gt;i5 ,共10个事务；5个事务包含i1,i2；2个事务包含i1,i2和i5   confidence=2/5=40%，support=2/10=20%<br>2).i1 ∧i5=&gt;i2 ,共10个事务；2个事务包含i1,i5；2个事务包括i1,i2和i5   confidence=2/2=100%，support=2/10=20%<br>3).i2 ∧i5=&gt;i1 ,共10个事务；2个事务包含i2,i5；2个事务包含i1,i2和i5    confidence=2/2=100%，support=2/10=20%<br>4).i1=&gt;i2 ∧i5 ,共10个事务；7个事务包含i1；2个事务包含i1,i2和i5       confidence=2/7=28%，support=2/10=20%<br>5).i2=&gt;i1 ∧i5 ,共10个事务；8个事务包含i2；2个事务包含i1,i2和i5       confidence=2/8=25%，support=2/10=20%<br>6).i5=&gt;i1 ∧i2 ,共10个事务；2个事务包含i5；2个事务包含i1,i2和i5       confidence=2/2=100%，support=2/10=20%<br>因最小置信度阈值为80%,最小支持度阈值为20%,则236规则符合要求,是频繁项集I={i1,i2,i5}产生的强关联规则且可以输出。</p>
+<h3 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h3><pre><code class="bash">package com.datamine.apriori;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 本程序用于频繁集的挖掘
+ * 首先用List&lt;List&lt;String&gt;&gt;类型的record将矩阵形式的数据读入内存
+ * 
+ * 程序先求出k-1候选集，由后选集和数据库记录record求得满足支持度的k-1级集合，
+ * 在满足支持度集合中求出满足置信度的集合
+ * 若满足置信度的集合为空，程序停止
+ * 否则输出满足自信度的集合，以及对应的支持度和置信度
+ * 并由满足支持度的k-1级集合求出候选k级集合，进入下一轮循环
+ * 
+ * 直至程序结束，输出全部频繁集
+ * @author Administrator
+ *
+ */
+public class Apriori {
+
+    static boolean endTag = false;
+    static Map&lt;Integer,Integer&gt; dCountMap = new HashMap&lt;Integer, Integer&gt;(); //k-1频繁集的记数表
+    static Map&lt;Integer,Integer&gt; dkCountMap = new HashMap&lt;Integer, Integer&gt;(); //k频繁集的记数表
+    static List&lt;List&lt;String&gt;&gt; record = new ArrayList&lt;List&lt;String&gt;&gt;(); //数据记录表
+//    final static double MIN_SUPPORT = 0.2; //最小支持度
+//    final static double MIN_CONF = 0.8;  //最小置信度
+    static double MIN_SUPPORT = 0.2; //最小支持度
+    static double MIN_CONF = 0.8;  //最小置信度
+    static int lable = 1; //用于输出时的一个标记，记录当前打印第几级关联集
+    static List&lt;Double&gt; confCount = new ArrayList&lt;Double&gt;(); //置信度记录表
+    static List&lt;List&lt;String&gt;&gt; confItemset = new ArrayList&lt;List&lt;String&gt;&gt;(); //满足支持度的集合
+
+    /*public static void main(String[] args) throws Exception {
+
+        record = new TxtReader().getRecord(); //获取数据
+        //System.out.println(record);
+        List&lt;List&lt;String&gt;&gt; cItemset = findFirstCandidate(); //获取第一次的候选集
+        //System.out.println(cItemset);
+        List&lt;List&lt;String&gt;&gt; lItemset = getSupportedItemset(cItemset); //获取候选集cItemset满足支持的集合
+
+        while(endTag != true){ //只要能继续挖掘
+
+            List&lt;List&lt;String&gt;&gt; ckItemset = getNextCandidate(lItemset); //获取下一次的候选集
+
+            List&lt;List&lt;String&gt;&gt; lkItemset = getSupportedItemset(ckItemset); //获取候选集ckItemset满足支持的集合
+
+            System.out.println(lkItemset);
+
+            getConfidencedItemset(lkItemset,lItemset,dCountMap,dkCountMap);
+
+            if(confItemset.size() != 0) //满足置信度的集合不为空
+                printConfItemset(confItemset); //打印满足置信度的集合
+            confItemset.clear(); //清空置信度集合
+
+            cItemset = ckItemset;
+            lItemset = lkItemset;
+
+            dCountMap.clear();
+            dCountMap.putAll(dkCountMap);
+
+        }
+
+    }*/
+
+
+    public void run(List&lt;List&lt;String&gt;&gt; record2,double support,double conf){
+
+        record = record2;
+        MIN_SUPPORT = support;
+        MIN_CONF = conf;
+
+        List&lt;List&lt;String&gt;&gt; cItemset = findFirstCandidate(); //获取第一次的候选集
+
+        List&lt;List&lt;String&gt;&gt; lItemset = getSupportedItemset(cItemset); //获取候选集cItemset满足支持的集合
+
+        while(endTag != true){ //只要能继续挖掘
+
+            List&lt;List&lt;String&gt;&gt; ckItemset = getNextCandidate(lItemset); //获取下一次的候选集
+
+            List&lt;List&lt;String&gt;&gt; lkItemset = getSupportedItemset(ckItemset); //获取候选集ckItemset满足支持的集合
+
+            System.out.println(lkItemset);
+
+            getConfidencedItemset(lkItemset,lItemset,dCountMap,dkCountMap);
+
+            if(confItemset.size() != 0) //满足置信度的集合不为空
+                printConfItemset(confItemset); //打印满足置信度的集合
+            confItemset.clear(); //清空置信度集合
+
+            cItemset = ckItemset;
+            lItemset = lkItemset;
+
+            dCountMap.clear();
+            dCountMap.putAll(dkCountMap);
+
+        }
+    }
+
+
+    /**
+     * 打印结果
+     * @param confItemset2
+     */
+    private static void printConfItemset(List&lt;List&lt;String&gt;&gt; confItemset2) {
+
+        System.out.println(&quot;*******************频繁模式挖掘结果***********************&quot;);
+        for(int i = 0; i &lt; confItemset2.size();i++){
+            int j =0;
+            for(j = 0; j &lt; confItemset2.get(i).size()-3;j++)
+                System.out.print(confItemset2.get(i).get(j)+&quot; &quot;);
+            System.out.print(&quot;--&gt;&quot;);
+            System.out.print(confItemset2.get(i).get(j++));
+            System.out.print(&quot; 相对支持度：&quot;+confItemset2.get(i).get(j++));
+            System.out.print(&quot; 自信度：&quot;+confItemset2.get(i).get(j++)+&quot;\n&quot;);
+        }
+
+    }
+
+    /**
+     * 根据4个参数求出满足自信度的集合
+     * @param lkItemset k项候选集
+     * @param lItemset  k-1项集
+     * @param dCountMap2 k-1项频繁项纪录数
+     * @param dkCountMap2 k项频繁项纪录数
+     */
+    private static void getConfidencedItemset(List&lt;List&lt;String&gt;&gt; lkItemset,
+            List&lt;List&lt;String&gt;&gt; lItemset, Map&lt;Integer, Integer&gt; dCountMap2,
+            Map&lt;Integer, Integer&gt; dkCountMap2) {
+
+        for(int i = 0;i&lt;lkItemset.size();i++){
+
+            getConfItem(lkItemset.get(i),lItemset,dkCountMap2.get(i),dCountMap2);
+        }
+
+    }
+
+    /**
+     * 检验集合list是否满足最低自信度要求
+     * 若满足则在全局变量confiItemset添加list
+     * 不满足返回null
+     * @param list k频繁项集中第i个元组
+     * @param lItemset k-1项集
+     * @param count  k项集第i个元组计数
+     * @param dCountMap2 k-1项频繁项纪录map
+     */
+    private static void getConfItem(List&lt;String&gt; list,
+            List&lt;List&lt;String&gt;&gt; lItemset, Integer count,
+            Map&lt;Integer, Integer&gt; dCountMap2) {
+
+        for(int i = 0;i &lt; list.size() ;i++){
+
+            List&lt;String&gt; testList = new ArrayList&lt;String&gt;();
+
+            for(int j = 0; j &lt;list.size(); j++)
+                if( i !=j )
+                    testList.add(list.get(j));
+            //查找testList中的内容在lItemset的位置
+            int index = findConf(testList,lItemset);
+            Double conf = count*1.0/dCountMap2.get(index);
+
+            if(conf &gt; MIN_CONF){
+                testList.add(list.get(i));
+                Double relativeSupport = count*1.0 /(record.size() - 1);
+                testList.add(relativeSupport.toString());
+                testList.add(conf.toString());
+                confItemset.add(testList);
+            }
+
+        }
+
+    }
+
+    /**
+     * 查找testList中的内容在lItemset的位置
+     * @param testList
+     * @param lItemset
+     * @return
+     */
+    private static int findConf(List&lt;String&gt; testList,
+            List&lt;List&lt;String&gt;&gt; lItemset) {
+
+        for(int i = 0; i &lt; lItemset.size(); i++){
+
+            boolean notHaveTag = false;
+            for(int j = 0;j &lt; testList.size();j++){
+                if(haveThisItem(testList.get(j),lItemset.get(i))==false){
+                    notHaveTag = true;
+                    break;
+                }
+            }
+            if(notHaveTag == false)
+                return i;
+        }
+
+        return -1;
+    }
+
+    /**
+     * 检验list中是否包含s
+     * @param s
+     * @param list
+     * @return boolean
+     */
+    private static boolean haveThisItem(String s, List&lt;String&gt; list) {
+
+        for(int i = 0; i&lt;list.size() ;i++)
+            if(s.equals(list.get(i)))
+                return true;
+        return false;
+
+    }
+
+    /**
+     * 根据cItemset求得下一次的候选集合组，求出候选集合组中每一个集合的元素的个数比cItemset中的集合元素大1
+     * @param cItemset 
+     * [[I1], [I2], [I5], [I4], [I3]]
+     * @return nextItemset 
+     * [[I1, I2], [I1, I5], [I1, I4], [I1, I3], [I2, I5], [I2, I4], [I2, I3], [I5, I4], [I5, I3], [I4, I3]]
+     */
+    private static List&lt;List&lt;String&gt;&gt; getNextCandidate(
+            List&lt;List&lt;String&gt;&gt; cItemset) {
+
+        List&lt;List&lt;String&gt;&gt; nextItemset = new ArrayList&lt;List&lt;String&gt;&gt;();
+
+        for(int i =0;i&lt;cItemset.size();i++){
+
+            List&lt;String&gt; tempList = new ArrayList&lt;String&gt;(); 
+
+            //tempList先存入一项
+            for(int k = 0;k&lt;cItemset.get(i).size();k++)
+                tempList.add(cItemset.get(i).get(k));   
+
+            //接下来每次添加下一项的一个元素
+            for(int h=i+1;h&lt;cItemset.size();h++){
+                for(int j = 0;j&lt;cItemset.get(h).size();j++){
+
+                    tempList.add(cItemset.get(h).get(j));
+
+                    //tempList的子集全部在cItemset中
+                    if(isSubsetInC(tempList,cItemset)){
+
+                        List&lt;String&gt; copyValueHelpList = new ArrayList&lt;String&gt;();
+                        for(int p =0;p&lt;tempList.size();p++)
+                            copyValueHelpList.add(tempList.get(p));
+                        if(isHave(copyValueHelpList,nextItemset))
+                            nextItemset.add(copyValueHelpList);
+                    }
+                    tempList.remove(tempList.size()-1);
+                }
+            }
+
+        }
+
+        return nextItemset;
+    }
+
+    /**
+     * 检验nextItemset中是否包含copyValueHelpList
+     * @param copyValueHelpList
+     * @param nextItemset
+     * @return boolean
+     */
+    private static boolean isHave(List&lt;String&gt; copyValueHelpList,
+            List&lt;List&lt;String&gt;&gt; nextItemset) {
+
+        for(int i =0;i&lt;nextItemset.size();i++)
+            if(copyValueHelpList.equals(nextItemset.get(i)))
+                return false;
+        return true;
+    }
+
+    /**
+     * 检验tempList是不是cItemset的子集
+     * @param tempList
+     * @param cItemset
+     * @return boolean
+     */
+    private static boolean isSubsetInC(List&lt;String&gt; tempList,
+            List&lt;List&lt;String&gt;&gt; cItemset) {
+
+        boolean haveTag = false;
+
+        for(int i = 0;i&lt;tempList.size();i++){
+
+            List&lt;String&gt; testList = new ArrayList&lt;String&gt;();
+            for(int j = 0;j&lt;tempList.size();j++)
+                if(i != j )
+                    testList.add(tempList.get(j));  //testList记录tempList中k-1级频繁集
+
+            for(int k = 0;k &lt; cItemset.size();k++){
+                if(testList.equals(cItemset.get(k))){ //子集存在于k-1频繁集中
+                    haveTag = true;
+                    break;
+                }
+            }
+
+            if(haveTag == false) //其中一个子集不再k-1频繁集中
+                return false;
+        }
+
+        return haveTag;
+    }
+
+    /** 返回候选集中满足最低支持度的集合
+     * @param cItemset
+     * [[I1, I2], [I1, I5], [I1, I4], [I1, I3], [I2, I5], [I2, I4], [I2, I3], [I5, I4], [I5, I3], [I4, I3]]
+     * @return supportedItemset
+     * [[I1, I2], [I1, I5], [I1, I3], [I2, I5], [I2, I4], [I2, I3], [I4, I3]]
+     */
+    private static List&lt;List&lt;String&gt;&gt; getSupportedItemset(
+            List&lt;List&lt;String&gt;&gt; cItemset) {
+
+        boolean end = true;
+        List&lt;List&lt;String&gt;&gt; supportedItemset = new ArrayList&lt;List&lt;String&gt;&gt;();
+        int k = 0;
+
+        for(int i = 0; i &lt; cItemset.size(); i++){
+
+            int count = countFrequent(cItemset.get(i)); //统计记录数
+            //System.out.println(cItemset.get(i)+&quot; &quot; +count);
+
+            if(count &gt;= MIN_SUPPORT*(record.size()-1)){ //count值大于支持度与记录数的乘积，即满足支持度要求
+                if(cItemset.get(0).size() == 1)
+                    dCountMap.put(k++, count);
+                else
+                    dkCountMap.put(k++, count);
+                supportedItemset.add(cItemset.get(i));
+                end = false;
+            }
+        }
+
+        endTag = end;
+        return supportedItemset;
+    }
+
+    /**
+     * 统计数据库记录record中出现list中的集合的个数
+     * @param list
+     * @return  频繁项集 个数
+     */
+    private static int countFrequent(List&lt;String&gt; list) {
+
+        int count = 0;
+        for(int i = 1; i&lt;record.size(); i++){
+
+            boolean notHaveThisList = false;
+
+            for(int k = 0;k&lt;list.size();k++){
+
+                boolean thisRecordHave = false;
+
+                for(int j = 1;j&lt;record.get(i).size();j++){
+                    if(list.get(k).equals(record.get(i).get(j)))
+                        thisRecordHave = true;
+                }
+
+                if(!thisRecordHave){ // 扫描一遍记录表的一行，发现list.get(i)不在记录表的第j行中，即list不可能在j行中
+                    notHaveThisList = true;
+                    break;
+                }
+            }
+
+            if(notHaveThisList == false)
+                count++;
+        }
+
+        return count;
+    }
+
+    /**
+     * 根据数据库记录求出第一次候选集
+     * @return 返回一级候选集
+     */
+    private static List&lt;List&lt;String&gt;&gt; findFirstCandidate() {
+
+        List&lt;List&lt;String&gt;&gt; tableList = new ArrayList&lt;List&lt;String&gt;&gt;();
+        List&lt;String&gt; lineList = new ArrayList&lt;String&gt;();
+
+        int size = 0;
+        for(int i = 1; i &lt; record.size(); i++){
+            for(int j = 1; j&lt;record.get(i).size();j++){
+                if(lineList.isEmpty())
+                    lineList.add(record.get(i).get(j));
+                else{
+                    boolean haveThisItem = false;
+                    size = lineList.size();
+                    for(int k = 0; k&lt;size;k++){
+                        if(lineList.get(k).equals(record.get(i).get(j))){
+                            haveThisItem = true;
+                            break;
+                        }
+                    }
+                    if(haveThisItem == false)
+                        lineList.add(record.get(i).get(j));
+                }
+            }
+        }
+        // [I1, I2, I5, I4, I3]
+        // System.out.println(lineList);
+
+        for(int i = 0; i&lt;lineList.size();i++){
+            List&lt;String&gt; helpList = new ArrayList&lt;String&gt;();
+            helpList.add(lineList.get(i));
+            tableList.add(helpList);
+        }
+        // [[I1], [I2], [I5], [I4], [I3]]
+        // System.out.println(tableList);
+
+        return tableList;
+    }
+
+
+}
+
+</code></pre>
+<p>测试数据读取类：</p>
+<pre><code class="ba">package com.datamine.apriori;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 本程序用于读取矩阵型的记录数据，并转换为List&lt;List&lt;String&gt;&gt; 格式数据
+ * @author Administrator
+ *
+ */
+public class TxtReader {
+
+    public List&lt;List&lt;String&gt;&gt; getRecord() throws Exception {
+
+        List&lt;List&lt;String&gt;&gt; record = new ArrayList&lt;List&lt;String&gt;&gt;();
+
+        String encoding = &quot;GBK&quot;; //字符编码 解决中文乱码问题
+        String simple = new File(&quot;&quot;).getAbsolutePath() + File.separator + &quot;data\\Apriori.txt&quot;;
+        File file = new File(simple);
+
+        if(file.isFile() &amp;&amp; file.exists()){
+            InputStreamReader read = new InputStreamReader(new FileInputStream(file),encoding);
+            BufferedReader bufferedReader = new BufferedReader(read);
+            String lineTxt = null;
+            while((lineTxt = bufferedReader.readLine()) != null){ //读一行文件
+                String[] lineString = lineTxt.split(&quot; &quot;);
+                List&lt;String&gt; lineList = new ArrayList&lt;String&gt;();
+                for(int i = 0; i &lt; lineString.length ; i++){  //处理矩阵中的T、F、YES、NO
+                    if(lineString[i].endsWith(&quot;T&quot;) || lineString[i].endsWith(&quot;YES&quot;))
+                        lineList.add(record.get(0).get(i));  //保存 T或者YES对应的头(也就是商品)
+                    else if (lineString[i].endsWith(&quot;F&quot;) || lineString[i].endsWith(&quot;NO&quot;))
+                        ; //F、NO记录不保存   ：当为F、NO时，说明没有购买响应的商品
+                    else
+                        lineList.add(lineString[i]);
+                }
+                record.add(lineList);
+            }
+            read.close();
+        }else{
+            System.out.println(&quot;找不到 指定的文件！&quot;);
+        }
+        return record;
+    }
+
+}
+
+</code></pre>
+<p>程序入口类：</p>
+<pre><code class="bash">package com.datamine.apriori;
+
+import java.util.List;
+
+
+public class TestApriori {
+
+    public static void main(String[] args) throws Exception {
+
+        //输入数据
+        TxtReader reader = new TxtReader();
+        List&lt;List&lt;String&gt;&gt; record = reader.getRecord();
+        //最小支持度
+        double support = 0.2;
+        //最小置信度
+        double conf = 0.8;
+
+        Apriori apriori = new Apriori();
+
+        apriori.run(record, support, conf);
+    }
+
+}
+
+</code></pre>
+<p>实验数据：</p>
+<pre><code class="bash">TID I1 I2 I3 I4 I5
+T100 T T F F T
+T200 T T F F F
+T300 F T F T F
+T400 T T F T F
+T500 T F T F F
+T600 T T T F T
+T700 T T T F F
+T800 F T F F T
+T900 F T T T F
+T1000 F F T T F
+</code></pre>
+<p>实验结果：</p>
+<pre><code class="bash">[[I1, I2], [I1, I5], [I1, I3], [I2, I5], [I2, I4], [I2, I3], [I4, I3]]
+*******************频繁模式挖掘结果***********************
+I1 --&gt;I2 相对支持度：0.5 自信度：0.8333333333333334
+I5 --&gt;I2 相对支持度：0.3 自信度：1.0
+[[I1, I2, I5], [I1, I2, I3]]
+*******************频繁模式挖掘结果***********************
+I1 I5 --&gt;I2 相对支持度：0.2 自信度：1.0
+[]
+
+</code></pre>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/数据挖掘/">数据挖掘</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/算法/">算法</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Apriori/">Apriori</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/01/22/Hexo-多机更新的实现/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span class="hidden-mobile">Hexo 多机更新的实现</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2017/12/22/做一款可用的天气-APP/">
+                        <span class="hidden-mobile">做一款可用的天气 APP</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "关联规则—频繁项集Apriori算法&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

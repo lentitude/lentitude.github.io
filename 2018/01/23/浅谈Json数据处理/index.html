@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="念起即觉, 觉己不随">
+  <meta name="author" content="胡叙双">
+  <meta name="keywords" content>
+  <title>浅谈Json数据处理 - Lentitude-胡叙双</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<!-- 自定义样式保持在最底部 -->
+
+
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Lentitude-胡叙双</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <p class="mt-3 post-meta">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                  星期二, 一月 23日 2018, 3:57 下午
+                </p>
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    2.3k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      12 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <div class="markdown-body">
+              <p>在做毕设过程中, 获取频繁集需要先对原先的数据集进行处理, 因为获取的数据集文件中以条为单位,而每条数据都是 Json格式。这就涉及到对 Json数据的解析和处理操作。因为之前处理Json都是使用阿里开源的 FastJson包, 在巩固的同时, 对其他的第三方库也会进行介绍</p>
+<a id="more"></a>
+<h2 id="JSON数据格式"><a href="#JSON数据格式" class="headerlink" title="JSON数据格式"></a>JSON数据格式</h2><p>JSON是一种轻量级的数据交换方式，主要的特点在于简洁和清晰的层次结构，易于人阅读和编写，而且易于机器的解析和生成。主要规则如下：</p>
+<ol>
+<li>对象表示为键值对</li>
+<li>数据由逗号分隔</li>
+<li>花括号保存对象</li>
+<li>方括号保存数组</li>
+</ol>
+<p>示例：</p>
+<pre><code class="bash">{
+    &quot;reviewerID&quot;:&quot;A11N155CW1UV02&quot;,
+    &quot;asin&quot;:&quot;B000H00VBQ&quot;,
+    &quot;reviewerName&quot;:&quot;AdrianaM&quot;,
+    &quot;helpful&quot;:[
+        0,
+        0
+    ],
+    &quot;reviewText&quot;:&quot;I had big expectations because I love English TV, in particular Investigative and detective stuff but this guy is really boring. It didn&#39;t appeal to me at all.&quot;,
+    &quot;overall&quot;:2,
+    &quot;summary&quot;:&quot;A little bit boring for me&quot;,
+    &quot;unixReviewTime&quot;:1399075200,
+    &quot;reviewTime&quot;:&quot;05 3, 2014&quot;
+}
+</code></pre>
+<h2 id="Net-sf-json"><a href="#Net-sf-json" class="headerlink" title="Net.sf.json"></a>Net.sf.json</h2><p>最初应用最多的Json数据处理方式, 需要下载相对应的jar 包和对应的依赖包(<a href="https://pan.baidu.com/s/1o9RRNaa" target="_blank" rel="noopener">下载地址</a> - 9os8)</p>
+<ol>
+<li>JavaBean -&gt; Json</li>
+</ol>
+<pre><code>PersonBean person = new PersonBean(1, &quot;zhanglu&quot;, &quot;Hubei&quot;);
+JSONObject json = JSONObject.fromObject(person);
+System.out.println(json);
+</code></pre><pre><code>{&quot;name&quot;:&quot;lentitude&quot;,&quot;place&quot;:&quot;zhejiang&quot;,&quot;year&quot;:1}
+</code></pre><ol>
+<li>Json -&gt; JavaBean</li>
+</ol>
+<pre><code>String json1 = &quot;{&#39;year&#39;:1,&#39;name&#39;:&#39;Hubei&#39;,&#39;place&#39;:&#39;zhanglu&#39;}&quot;;
+PersonBean person =(PersonBean)JSONObject.toBean(JSONObject.fromObject(json), PersonBean.class);
+System.out.println(person);
+</code></pre><pre><code>year:1,name:Hubei,place:zhanglu
+</code></pre><p>需要在 PersonBean 类中加入无参构造器, 不然会出现<code>java.lang.NoSuchMethodException</code> 异常</p>
+<ol>
+<li>List<javabean> -&gt; Json</javabean></li>
+</ol>
+<pre><code>List&lt;PersonBean&gt; personlist = new ArrayList&lt;PersonBean&gt;();
+personlist.add(new PersonBean(1, &quot;zhanglu&quot;, &quot;Hubei&quot;));
+personlist.add(new PersonBean(2, &quot;maomao&quot;, &quot;Hebei&quot;));
+String jsonString = JSONArray.fromObject(personlist).toString();
+System.out.println(jsonString);
+</code></pre><pre><code>[{&quot;name&quot;:&quot;zhanglu&quot;,&quot;place&quot;:&quot;Hubei&quot;,&quot;year&quot;:1},{&quot;name&quot;:&quot;maomao&quot;,&quot;place&quot;:&quot;Hebei&quot;,&quot;year&quot;:2}]
+</code></pre><ol>
+<li>JsonString -&gt; List<javabean></javabean></li>
+</ol>
+<pre><code>String jsonString = 
+&quot;[{&#39;year&#39;:1,&#39;address&#39;:&#39;Hubei&#39;,&#39;name&#39;:&#39;zhanglu&#39;},{&#39;year&#39;:2,&#39;address&#39;:&#39;Hebei&#39;,&#39;name&#39;:&#39;maomao&#39;}]&quot;;
+JSONArray jsonArray = JSONArray.fromObject(jsonString);
+List&lt;PersonBean&gt; list = JSONArray.toList(jsonArray, new PersonBean(),new JsonConfig());
+for (PersonBean person : list) {
+      System.out.println(person);
+}
+</code></pre><pre><code>year:1,name:zhanglu,place:Hubei
+year:2,name:maomao,place:Hebei
+</code></pre><ol>
+<li>Array -&gt; Json</li>
+</ol>
+<pre><code>Object[] obj = new Object[] { new PersonBean(1, &quot;zhanglu&quot;, &quot;Hubei&quot;),new PersonBean(2, &quot;maomao&quot;, &quot;Hebei&quot;) };
+String jsonString = JSONArray.fromObject(obj).toString();
+System.out.println(jsonString);
+</code></pre><pre><code>[{&quot;name&quot;:&quot;zhanglu&quot;,&quot;place&quot;:&quot;Hubei&quot;,&quot;year&quot;:1},{&quot;name&quot;:&quot;maomao&quot;,&quot;place&quot;:&quot;Hebei&quot;,&quot;year&quot;:2}]
+</code></pre><ol>
+<li>Json -&gt; Array</li>
+</ol>
+<pre><code>String jsonString = 
+&quot;[{&#39;year&#39;:1,&#39;address&#39;:&#39;Hubei&#39;,&#39;name&#39;:&#39;zhanglu&#39;},{&#39;year&#39;:2,&#39;address&#39;:&#39;Hebei&#39;,&#39;name&#39;:&#39;maomao&#39;}]&quot;;
+JSONArray jsonArray = JSONArray.fromObject(jsonString);
+Object[] obj = (Object[]) JSONArray.toArray(jsonArray, PersonBean.class);
+for (int i = 0; i &lt; obj.length; i++) {
+    System.out.println((PersonBean) obj[i]);
+}
+</code></pre><pre><code>year:1,name:zhanglu,place:Hubei
+year:2,name:maomao,place:Hebei
+</code></pre><ol>
+<li>Map -&gt; Json</li>
+</ol>
+<pre><code>Map&lt;String, PersonBean&gt; map = new HashMap&lt;String, PersonBean&gt;();
+map.put(&quot;person1&quot;, new PersonBean(1, &quot;zhanglu&quot;, &quot;Hubei&quot;));
+map.put(&quot;person2&quot;, new PersonBean(2, &quot;maomao&quot;, &quot;Hebei&quot;));
+String json = JSONObject.fromObject(map).toString();
+System.out.println(json);
+</code></pre><pre><code>{&quot;person2&quot;:{&quot;name&quot;:&quot;maomao&quot;,&quot;place&quot;:&quot;Hebei&quot;,&quot;year&quot;:2},
+&quot;person1&quot;:{&quot;name&quot;:&quot;zhanglu&quot;,&quot;place&quot;:&quot;Hubei&quot;,&quot;year&quot;:1}}
+</code></pre><ol>
+<li>Json -&gt; Map</li>
+</ol>
+<pre><code>String jsonStr = &quot;{&#39;person1&#39;:{&#39;year&#39;:1,&#39;place&#39;:&#39;Hubei&#39;,&#39;name&#39;:&#39;zhanglu&#39;},&#39;person2&#39;:{&#39;year&#39;:2,&#39;place&#39;:&#39;Hebei&#39;,&#39;name&#39;:&#39;maomao&#39;}}&quot;;
+JSONObject jsonObject = JSONObject.fromObject(jsonStr);
+Map&lt;String,PersonBean&gt; map = new HashMap&lt;String,PersonBean&gt;();
+for (Iterator&lt;?&gt; iter = jsonObject.keys(); iter.hasNext();) {
+String key = (String) iter.next();
+map.put(key,(PersonBean)JSONObject.toBean((JSONObject) jsonObject.get(key),PersonBean.class));
+}
+for(String key : map.keySet()){
+     System.out.println((PersonBean)map.get(key));
+}
+</code></pre><pre><code>year:2,name:maomao,place:Hebei
+year:1,name:zhanglu,place:Hubei
+</code></pre><h2 id="Gson"><a href="#Gson" class="headerlink" title="Gson"></a>Gson</h2><p>使用 Google 的 gson 方式解析 json,  gson 支持解析的类型比较全面, 包括JavaBean, List<javabean>, Map等, 使用起来不需要太多的依赖包(<a href="https://pan.baidu.com/s/1qZGYxrQ" target="_blank" rel="noopener">下载地址</a> - f4rg)</javabean></p>
+<pre><code>private Gson gson = new Gson();
+</code></pre><ol>
+<li>JavaBean -&gt; Json String</li>
+</ol>
+<pre><code>Person person  = new Person();
+person.setId(1);
+person.setName(&quot;zhanglu&quot;);
+person.setAddress(&quot;湖北大悟&quot;);
+System.out.println(gson.toJson(person));
+</code></pre><pre><code>{&quot;id&quot;:1,&quot;name&quot;:&quot;zhanglu&quot;,&quot;address&quot;:&quot;湖北大悟&quot;}
+</code></pre><ol>
+<li>Json String -&gt; JavaBean</li>
+</ol>
+<pre><code>String json = &quot;{&#39;id&#39;:&#39;1&#39;,&#39;name&#39;:&#39;zhang&#39;,&#39;address&#39;:&#39;Hubei&#39;}&quot;;
+Person person = gson.fromJson(json, Person.class);
+System.out.println(person);
+</code></pre><pre><code>id:1 name:zhang address:Hubei
+</code></pre><ol>
+<li>List<bean> -&gt; Json</bean></li>
+</ol>
+<pre><code>Person person1 = new Person(1, &quot;zhang&quot;, &quot;Hubei&quot;);
+Person person2 = new Person(2,&quot;lu&quot;,&quot;DaWu&quot;);
+List&lt;Person&gt; persons = new ArrayList&lt;&gt;();
+persons.add(person1);
+persons.add(person2);
+String json = gson.toJson(persons);
+System.out.println(json);
+</code></pre><pre><code>[{&quot;id&quot;:1,&quot;name&quot;:&quot;zhang&quot;,&quot;address&quot;:&quot;Hubei&quot;},{&quot;id&quot;:2,&quot;name&quot;:&quot;lu&quot;,&quot;address&quot;:&quot;DaWu&quot;}]
+</code></pre><ol>
+<li>Json -&gt; List<bean></bean></li>
+</ol>
+<pre><code>String json = &quot;[{&#39;id&#39;:&#39;1&#39;,&#39;name&#39;:&#39;zhang&#39;,&#39;address&#39;:&#39;Hubei&#39;},{&#39;id&#39;:&#39;2&#39;,&#39;name&#39;:&#39;lu&#39;,&#39;address&#39;:&#39;DaWu&#39;}]&quot;;
+List&lt;Person&gt; persons = gson.fromJson(json, new TypeToken&lt;List&lt;Person&gt;&gt;(){}.getType());
+for(Person per : persons){
+     System.out.println(per);
+}
+</code></pre><pre><code>id:1 name:zhang address:Hubei
+id:2 name:lu address:DaWu
+</code></pre><ol>
+<li>List<bean> -&gt; String</bean></li>
+</ol>
+<pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;();
+list.add(&quot;zhanglu&quot;);
+list.add(&quot;hubei&quot;);
+list.add(&quot;Dawu&quot;);
+String json = gson.toJson(list);
+System.out.println(json);
+</code></pre><pre><code>[&quot;zhanglu&quot;,&quot;hubei&quot;,&quot;Dawu&quot;]
+</code></pre><ol>
+<li>Json String -&gt; List<string></string></li>
+</ol>
+<pre><code>String json = &quot;[&#39;zhanglu&#39;,&#39;hubei&#39;,&#39;Dawu&#39;]&quot;;
+List&lt;String&gt; list = gson.fromJson(json, new TypeToken&lt;List&lt;String&gt;&gt;(){}.getType());
+for(String str : list){
+    System.out.println(str);
+}
+</code></pre><pre><code>zhanglu
+hubei
+Dawu
+</code></pre><ol>
+<li>Map&lt;String,Object&gt; -&gt;  Json</li>
+</ol>
+<pre><code>Map&lt;String, Person&gt; map = new HashMap&lt;&gt;();
+Person person = new Person(1, &quot;zhanglu&quot;, &quot;湖北大悟&quot;);
+Person person2 = new Person(2, &quot;Alone&quot;, &quot;HuBeiDaWu&quot;);
+map.put(&quot;person&quot;, person);
+map.put(&quot;person2&quot;, person2);
+String json = gson.toJson(map);
+System.out.println(json);
+
+</code></pre><pre><code>{&quot;person2&quot;:{&quot;id&quot;:2,&quot;name&quot;:&quot;Alone&quot;,&quot;address&quot;:&quot;HuBeiDaWu&quot;},
+&quot;person&quot;:{&quot;id&quot;:1,&quot;name&quot;:&quot;zhanglu&quot;,&quot;address&quot;:&quot;湖北大悟&quot;}}
+
+</code></pre><ol>
+<li>Json -&gt; Map&lt;String, Object&gt;</li>
+</ol>
+<pre><code>String json = &quot;{&#39;person&#39;:{&#39;id&#39;:1,&#39;name&#39;:&#39;zhanglu&#39;,&#39;address&#39;:&#39;湖北大悟&#39;},&#39;person2&#39;:{&#39;id&#39;:2,&#39;name&#39;:&#39;Alone&#39;,&#39;address&#39;:&#39;HuBeiDaWu&#39;}}&quot;;
+Map&lt;String, Person&gt; map = gson.fromJson(json, new TypeToken&lt;Map&lt;String,Person&gt;&gt;(){}.getType());
+for(String str : map.keySet()){
+      System.out.println(&quot;key:&quot;+str);
+      System.out.println((Person)map.get(str));
+}
+
+</code></pre><pre><code>key:person
+id:1 name:zhanglu address:湖北大悟
+key:person2
+id:2 name:Alone address:HuBeiDaWu
+
+</code></pre><h2 id="FastJson"><a href="#FastJson" class="headerlink" title="FastJson"></a>FastJson</h2><p>阿里官方介绍开源的 fastJson 比 gson效率更高速度更快, 当初在讯飞实习时项目中使用的就是 fastJson库来处理 json 数据, 同样支持常用的数据类型解析, 而且提供了对大文本和时间类型的解析方式(<a href="http://repo1.maven.org/maven2/com/alibaba/fastjson/" target="_blank" rel="noopener">下载地址</a>)</p>
+<ol>
+<li>JavaBean -&gt; Json</li>
+</ol>
+<pre><code>Person person = new Person(1, &quot;zhanglu&quot;, &quot;Hubei&quot;);
+String json = JSON.toJSONString(person);
+System.out.println(json);
+
+</code></pre><pre><code>{&quot;address&quot;:&quot;zhanglu&quot;,&quot;id&quot;:1,&quot;name&quot;:&quot;Hubei&quot;}
+
+</code></pre><ol>
+<li>Json -&gt; JavaBean</li>
+</ol>
+<pre><code>String json = &quot;{&#39;address&#39;:&#39;Hubei&#39;,&#39;id&#39;:1,&#39;name&#39;:&#39;zhanglu&#39;}&quot;;
+Person person = JSON.parseObject(json, Person.class);
+System.out.println(person);
+
+</code></pre><pre><code>id: 1,address:Hubei,name:zhanglu
+
+</code></pre><ol>
+<li>List<javabean> -&gt; Json</javabean></li>
+</ol>
+<pre><code>Person p1 = new Person(1, &quot;zhanglu&quot;, &quot;Hubei&quot;);
+Person p2 = new Person(2, &quot;wukang&quot;, &quot;Hubei&quot;);
+List&lt;Person&gt; personlist = new ArrayList&lt;&gt;();
+personlist.add(p1);
+personlist.add(p2);
+String json = JSON.toJSONString(personlist);
+System.out.println(json);
+
+</code></pre><pre><code>[{&quot;address&quot;:&quot;zhanglu&quot;,&quot;id&quot;:1,&quot;name&quot;:&quot;Hubei&quot;},{&quot;address&quot;:&quot;wukang&quot;,&quot;id&quot;:2,&quot;name&quot;:&quot;Hubei&quot;}]
+
+</code></pre><ol>
+<li>Json -&gt; List<javabean></javabean></li>
+</ol>
+<pre><code>String json = &quot;[{&#39;address&#39;:&#39;Hubei&#39;,&#39;id&#39;:1,&#39;name&#39;:&#39;zhanglu&#39;},{&#39;address&#39;:&#39;Hubei&#39;,&#39;id&#39;:2,&#39;name&#39;:&#39;wukang&#39;}]&quot;;
+List&lt;Person&gt; persons = JSON.parseArray(json, Person.class);
+for (Person person : persons) {
+   System.out.println(person);
+}
+
+</code></pre><pre><code>id: 1,address:Hubei,name:zhanglu
+id: 2,address:Hubei,name:wukang
+
+</code></pre><ol>
+<li>List<string> -&gt; Json</string></li>
+</ol>
+<pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;();
+list.add(&quot;zhanglu&quot;);
+list.add(&quot;wukang&quot;);
+String json = JSON.toJSONString(list);
+System.out.println(json);
+
+</code></pre><pre><code>[&quot;zhanglu&quot;,&quot;wukang&quot;]
+
+</code></pre><ol>
+<li>Json -&gt; List<string></string></li>
+</ol>
+<pre><code>String json = &quot;[&#39;zhanglu&#39;,&#39;wukang&#39;]&quot;;
+List&lt;String&gt; list = JSON.parseArray(json, String.class);
+for (String str : list) {
+    System.out.println(str);
+}
+
+</code></pre><pre><code>zhanglu
+wukang
+
+</code></pre><ol>
+<li>Map&lt;String,Object&gt; -&gt; Json</li>
+</ol>
+<pre><code>Map&lt;String, Person&gt; map = new HashMap&lt;&gt;();
+map.put(&quot;person1&quot;, new Person(1, &quot;zhanglu&quot;, &quot;Hubei&quot;));
+map.put(&quot;person2&quot;, new Person(2, &quot;wukang&quot;, &quot;Hubei&quot;));
+String json = JSON.toJSONString(map);
+System.out.println(json);
+
+</code></pre><pre><code>{&quot;person1&quot;:{&quot;address&quot;:&quot;zhanglu&quot;,&quot;id&quot;:1,&quot;name&quot;:&quot;Hubei&quot;},&quot;person2&quot;:{&quot;address&quot;:&quot;wukang&quot;,&quot;id&quot;:2,&quot;name&quot;:&quot;Hubei&quot;}}
+
+</code></pre><ol>
+<li>Json -&gt; Map&lt;String,Object&gt;</li>
+</ol>
+<pre><code>String json = &quot;{&#39;person1&#39;:{&#39;address&#39;:&#39;Hubei&#39;,&#39;id&#39;:1,&#39;name&#39;:&#39;zhanglu&#39;},&#39;person2&#39;:{&#39;address&#39;:&#39;Hubei&#39;,&#39;id&#39;:2,&#39;name&#39;:&#39;wukang&#39;}}&quot;;
+Map&lt;String, Person&gt; map = JSON.parseObject(json,new TypeReference&lt;Map&lt;String, Person&gt;&gt;() {});
+for (String key : map.keySet()) {
+      System.out.println(&quot;key:&quot; + key);
+      System.out.println(map.get(key));
+}
+
+</code></pre><pre><code>key:person2
+id: 2,address:Hubei,name:wukang
+key:person1
+id: 1,address:Hubei,name:zhanglu
+
+</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>Net.sf.json 依赖的包较多, 而且部分版本中的类有变更，准备工作比较麻烦</li>
+<li>Gson 应用主要为 toJson 与 fromJson 两个转换函数, 只需要类中存在 get 和 set 方法, Gson 就可以完成将复杂类型的json到bean或bean到json的转换, 功能十分全面, 但是在性能上与 FastJson 有所差距</li>
+<li>FastJson 在复杂类型的Bean转换Json上会出现一些问题，可能会出现引用的类型，导致Json转换出错，需要制定引用。但是它采用独创的算法，将parse的速度提升到极致，超过所有json库</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/JAVA/">JAVA</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/JSON/">JSON</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2018/01/23/Hexo-常用命令/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span class="hidden-mobile">Hexo 常用命令</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2018/01/22/Hexo-多机更新的实现/">
+                        <span class="hidden-mobile">Hexo 多机更新的实现</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "浅谈Json数据处理&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

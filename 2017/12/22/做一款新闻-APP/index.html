@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="念起即觉, 觉己不随">
+  <meta name="author" content="胡叙双">
+  <meta name="keywords" content>
+  <title>做一款新闻 APP - Lentitude-胡叙双</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+  <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css">
+
+
+<!-- 自定义样式保持在最底部 -->
+
+
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Lentitude-胡叙双</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <p class="mt-3 post-meta">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                  星期五, 十二月 22日 2017, 12:33 下午
+                </p>
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    4.6k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      24 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <div class="markdown-body">
+              <p>跟代码相关的工作，大多唯手熟尔，所以这里花了点时间做了款简易版的新闻 APP，虽然都是些基础的内容，不过还是可以加深自己对部分代码的理解。至少，可以加深自己的记忆</p>
+<a id="more"></a>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
+<li>依赖库</li>
+<li>网络请求</li>
+<li>网络解析</li>
+<li>界面布局</li>
+<li>最后</li>
+<li>运行界面</li>
+<li>运行GIF</li>
+<li>完整代码下载地址（github）</li>
+</ol>
+<hr>
+<h3 id="依赖库"><a href="#依赖库" class="headerlink" title="依赖库"></a>依赖库</h3><p>过程中需要用到一些开源依赖库文件，先在 build.grade 中声明：</p>
+<pre><code>    compile &#39;com.google.code.gson:gson:2.8.0&#39;       //网络解析
+    compile &#39;com.squareup.okhttp3:okhttp:3.7.0&#39;     //网络请求
+    compile &#39;com.github.bumptech.glide:glide:3.8.0&#39; //图片加载
+    compile &#39;com.android.support:design:24.2.1&#39;     //Material Design中用到的依赖库
+    compile &#39;de.hdodenhof:circleimageview:2.1.0&#39;    //显示圆形图片
+</code></pre><hr>
+<h3 id="网络请求"><a href="#网络请求" class="headerlink" title="网络请求"></a>网络请求</h3><p>在包下创建一个文件夹 util 用来存放工具类，创建文件  HttpUtil.class 用来请求数据：</p>
+<pre><code>public class HttpUtil {
+    public static void sendOkHttpRequest(String address, okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(address).build();
+        client.newCall(request).enqueue(callback);
+    }
+}
+</code></pre><p>这里用到的是 okhttp3.Callback 的回调接口，结果会返回到 callback 的回调函数中，后面会进行处理</p>
+<hr>
+<h3 id="网络解析"><a href="#网络解析" class="headerlink" title="网络解析"></a>网络解析</h3><p>我们先从数据解析开始，毕竟这才是这个小项目的重点。这次项目使用的数据来源是天行数据（<a href="http://www.tianapi.com/" target="_blank" rel="noopener">http://www.tianapi.com/</a> ）的新闻资讯 API ，先看 API 的说明：</p>
+<p><center><img src="http://img.blog.csdn.net/20170506093055476?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWl3ZWkxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" srcset="/img/loading.gif" alt="新闻资讯 API"></center></p>
+<p>可以看到返回数据为 JSON, 默认返回 10 条参数。请求地址为：</p>
+<p><center><img src="http://img.blog.csdn.net/20170506094612844?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWl3ZWkxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" srcset="/img/loading.gif" alt="这里写图片描述"></center></p>
+<p>其中， APIKEY 需要用个人的 API KEY 代替，可以在个人中心中看到，其他的请求地址也是大同小异</p>
+<p><center><img src="http://img.blog.csdn.net/20170506094853735?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWl3ZWkxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" srcset="/img/loading.gif" alt="这里写图片描述"></center></p>
+<p>JSON 返回示例：</p>
+<p><center><img src="http://img.blog.csdn.net/20170506093317804?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWl3ZWkxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" srcset="/img/loading.gif" alt="这里写图片描述"></center></p>
+<p>还有错误返回码，用来判断返回数据的异常情况：</p>
+<p><center><img src="http://img.blog.csdn.net/20170506093436040?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWl3ZWkxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" srcset="/img/loading.gif" alt="这里写图片描述"></center></p>
+<p>根据 gson 的返回示例，我们可以写出对应的实体类文件，通过 gson 将返回数据转化为对应的类型。先创建一个 gson 文件夹存放实体类文件。</p>
+<p>在 gson 文件夹下创建 New.class 文件：</p>
+<pre><code>public class News {
+    @SerializedName(&quot;ctime&quot;)
+    public String time;
+
+    public String title;
+
+    public String description;
+
+    public String picUrl;
+
+    public String url;
+
+}
+</code></pre><p>创建 NewsList.class 文件：</p>
+<pre><code>public class NewsList {
+
+    public int code;
+
+    public String msg;
+
+    @SerializedName(&quot;newslist&quot;)
+    public List&lt;News&gt; newsList ;
+
+}
+</code></pre><p>至此，我们就已经创建好了与返回数据对应的实体类。</p>
+<p>在 util 文件夹下创建文件 Utility.class 文件：</p>
+<pre><code>public class Utility {
+    public static NewsList parseJsonWithGson(final String requestText){
+        Gson gson = new Gson();
+        return gson.fromJson(requestText, NewsList.class);
+    }
+
+}
+</code></pre><p>将请求得到的数据解析为 NewList 实体类对象。现在网络请求和解析都准备好了，就开始界面文件了</p>
+<hr>
+<h3 id="界面布局"><a href="#界面布局" class="headerlink" title="界面布局"></a>界面布局</h3><p>修改 values 目录下的 styles.xml 文件：</p>
+<pre><code>&lt;resources&gt;
+    &lt;!-- Base application theme. --&gt;
+    &lt;style name=&quot;AppTheme&quot; parent=&quot;Theme.AppCompat.Light.NoActionBar&quot;&gt;
+        &lt;!-- Customize your theme here. --&gt;
+        &lt;item name=&quot;colorPrimary&quot;&gt;@color/colorPrimary&lt;/item&gt;
+        &lt;item name=&quot;colorPrimaryDark&quot;&gt;@color/colorPrimary&lt;/item&gt;
+        &lt;item name=&quot;colorAccent&quot;&gt;@color/colorAccent&lt;/item&gt;
+    &lt;/style&gt;
+
+&lt;/resources&gt;
+
+</code></pre><p>修改通知栏颜色和标题栏颜色一样，是处于视觉统一的原因，也可以不修改（非必须）</p>
+<hr>
+<p>主要采用的是 Material Design 的设计，整体布局采用的是滑动菜单，主界面内容为 ToolBar 和 ListView（这里为了方便，就直接使用）,侧边栏内容为 NavigationView</p>
+<hr>
+<p>主界面：<br>因为要用 ToolBar 替代 ActionBar, 我们先修改 values 下面的 styles 文件，修改主题为：</p>
+<pre><code>&lt;style name=&quot;AppTheme&quot; parent=&quot;Theme.AppCompat.Light.NoActionBar&quot;&gt;
+</code></pre><p>在layout 下创建 nav_header 文件</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;180dp&quot;
+    android:background=&quot;@color/colorPrimary&quot;
+    android:padding=&quot;10dp&quot;&gt;
+
+    &lt;de.hdodenhof.circleimageview.CircleImageView
+        android:id=&quot;@+id/icon_image&quot;
+        android:layout_width=&quot;80dp&quot;
+        android:layout_height=&quot;80dp&quot;
+        android:layout_centerInParent=&quot;true&quot;
+        android:src=&quot;@drawable/nav_icon&quot; /&gt;
+
+    &lt;TextView
+        android:id=&quot;@+id/username&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentBottom=&quot;true&quot;
+        android:text=&quot;https://github.com/lentitude&quot;
+        android:textColor=&quot;@color/color_White&quot;
+        android:textSize=&quot;14sp&quot; /&gt;
+
+
+    &lt;TextView
+        android:id=&quot;@+id/mail&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_above=&quot;@id/username&quot;
+        android:text=&quot;lentitude&quot;
+        android:textColor=&quot;@color/color_White&quot;
+        android:textSize=&quot;14sp&quot; /&gt;
+
+&lt;/RelativeLayout&gt;
+</code></pre><p>这里在头部文件中放置了一个CircleImageView，两个 TextView,没有什么理解难度</p>
+<hr>
+<p>在 res 目录下创建 menu 文件夹，新建 nav_menu.xml 文件：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;menu xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
+    &lt;group android:checkableBehavior=&quot;single&quot;&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_society&quot;
+            android:title=&quot;社会新闻&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_county&quot;
+            android:title=&quot;国内新闻&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_internation&quot;
+            android:title=&quot;国际新闻&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_fun&quot;
+            android:title=&quot;娱乐新闻&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_sport&quot;
+            android:title=&quot;体育新闻&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_nba&quot;
+            android:title=&quot;NBA新闻&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_football&quot;
+            android:title=&quot;足球新闻&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_technology&quot;
+            android:title=&quot;科技新闻&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_work&quot;
+            android:title=&quot;创业新闻&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_apple&quot;
+            android:title=&quot;苹果新闻&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_war&quot;
+            android:title=&quot;军事新闻&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_internet&quot;
+            android:title=&quot;移动互联&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_travel&quot;
+            android:title=&quot;旅游咨询&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_health&quot;
+            android:title=&quot;健康知识&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_strange&quot;
+            android:title=&quot;奇闻异事&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_looker&quot;
+            android:title=&quot;美女图片&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_vr&quot;
+            android:title=&quot;VR科技&quot; /&gt;
+        &lt;item
+            android:id=&quot;@+id/nav_it&quot;
+            android:title=&quot;IT资讯&quot; /&gt;
+
+
+    &lt;/group&gt;
+&lt;/menu&gt;
+</code></pre><p>这里创建了若干个 ITEM 子项，只有 title，没有 icon，大家可以自行放置</p>
+<p>主界面 activity_main.xml：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;android.support.v4.widget.DrawerLayout
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+    android:id=&quot;@+id/drawer_layout&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    &gt;
+
+    &lt;android.support.design.widget.CoordinatorLayout
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;&gt;
+
+        &lt;android.support.design.widget.AppBarLayout
+            android:layout_width=&quot;match_parent&quot;
+            android:layout_height=&quot;wrap_content&quot;&gt;
+
+            &lt;android.support.v7.widget.Toolbar
+                android:id=&quot;@+id/tool_bar&quot;
+                android:layout_width=&quot;match_parent&quot;
+                android:layout_height=&quot;?attr/actionBarSize&quot;
+                app:contentInsetStart=&quot;0dp&quot;
+                app:titleTextColor=&quot;@color/color_White&quot;
+                android:background=&quot;@color/colorPrimary&quot;
+                /&gt;
+
+
+        &lt;/android.support.design.widget.AppBarLayout&gt;
+
+
+        &lt;android.support.v4.widget.SwipeRefreshLayout
+            android:id=&quot;@+id/swipe_layout&quot;
+            android:layout_width=&quot;match_parent&quot;
+            android:layout_height=&quot;match_parent&quot;
+            app:layout_behavior=&quot;@string/appbar_scrolling_view_behavior&quot;&gt;
+
+            &lt;ListView
+                android:id=&quot;@+id/list_view&quot;
+                android:layout_width=&quot;match_parent&quot;
+                android:layout_height=&quot;match_parent&quot;
+                android:divider=&quot;@color/color_Background&quot;
+                android:dividerHeight=&quot;1dp&quot;
+
+                /&gt;
+
+
+        &lt;/android.support.v4.widget.SwipeRefreshLayout&gt;
+
+    &lt;/android.support.design.widget.CoordinatorLayout&gt;
+
+
+    &lt;android.support.design.widget.NavigationView
+        android:id=&quot;@+id/nav_view&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;
+        android:layout_gravity=&quot;start&quot;
+        app:headerLayout=&quot;@layout/nav_header&quot;
+        app:menu=&quot;@menu/nav_menu&quot;
+        /&gt;
+
+
+&lt;/android.support.v4.widget.DrawerLayout&gt;
+</code></pre><p>因为是一步到位，所以……大家最好之前用过使用过相同的布局设计（比如：第一行代码）</p>
+<p>DrawerLayout 中有两个直接子布局文件：</p>
+<ol>
+<li>CoordinatorLayout：一种 FrameLayout, 作为显示主界面内容的最外层布局</li>
+<li>NavigationView：作为显示侧边栏的最外层布局，不过已经封装好了，可以直接通过 app:headerLayout 和 app:menu 属性引用之前我们已经写好的 头部和菜单布局文件</li>
+</ol>
+<p>CoordinatorLayout 中有两个直接子布局文件：</p>
+<ol>
+<li>AppBarLayout ：通过 AppBarLayout 属性，可以将 ToolBar 和 ListView 分隔开，可以对滚动事件进行响应，实现 Material 效果</li>
+<li>SwipeRefreshLayout：用来刷新 ListView 中的内容</li>
+</ol>
+<p>创建 list_view_item.xml 文件，设计 ListView 的子项布局：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;100dp&quot;
+    android:background=&quot;@color/color_White&quot;&gt;
+
+    &lt;RelativeLayout
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;
+        android:layout_margin=&quot;10dp&quot;&gt;
+
+        &lt;ImageView
+            android:id=&quot;@+id/title_pic&quot;
+            android:layout_width=&quot;80dp&quot;
+            android:layout_height=&quot;60dp&quot;
+            android:layout_centerVertical=&quot;true&quot;
+            android:layout_alignParentRight=&quot;true&quot;
+            android:scaleType=&quot;centerCrop&quot;/&gt;
+
+        &lt;TextView
+            android:id=&quot;@+id/title_text&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:textSize=&quot;16sp&quot;
+            android:layout_marginRight=&quot;10dp&quot;
+            android:layout_alignTop=&quot;@+id/title_pic&quot;
+            android:layout_alignParentLeft=&quot;true&quot;
+            android:layout_toLeftOf=&quot;@+id/title_pic&quot;
+            /&gt;
+
+        &lt;TextView
+            android:id=&quot;@+id/descr_text&quot;
+            android:layout_width=&quot;wrap_content&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:textSize=&quot;8sp&quot;
+            android:layout_marginRight=&quot;10dp&quot;
+            android:layout_alignBottom=&quot;@+id/title_pic&quot;
+            android:layout_alignParentLeft=&quot;true&quot;
+            /&gt;
+
+    &lt;/RelativeLayout&gt;
+
+
+&lt;/RelativeLayout&gt;
+</code></pre><p>子项布局内包含 3 个控件，ImageView 显示返回的图片，TextView 显示返回的标题和出处</p>
+<p>创建一个 Title.class类：</p>
+<pre><code>public class Title {
+    private String title;
+    private String descr;
+    private String imageUrl;
+    private String uri;
+
+    public Title(String title,String descr, String imageUrl, String uri){
+        this.title = title;
+        this.imageUrl = imageUrl;
+        this.descr = descr;
+        this.uri = uri;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public String getDescr() {
+        return descr;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+}
+
+</code></pre><p>这里之所以除了 标题，出处，图片显示在 ListViw 中，uri 传入另一个布局，显示内容文件</p>
+<p>接下来就是 TitleAdapter.class</p>
+<pre><code>public class TitleAdapter extends ArrayAdapter&lt;Title&gt; {
+    private int resourceId;
+
+    public TitleAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List&lt;Title&gt; objects) {
+        super(context, resource, objects);
+        resourceId = resource;
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        Title title = getItem(position);
+        View view;
+        ViewHolder viewHolder;
+        /**
+         * 缓存布局和实例，优化 listView
+         */
+        if (convertView == null){
+            view = LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
+            viewHolder = new ViewHolder();
+            viewHolder.titleText = (TextView)view.findViewById(R.id.title_text);
+            viewHolder.titlePic = (ImageView) view.findViewById(R.id.title_pic);
+            viewHolder.titleDescr = (TextView)view.findViewById(R.id.descr_text);
+            view.setTag(viewHolder);
+        }else{
+            view = convertView;
+            viewHolder = (ViewHolder) view.getTag();
+        }
+
+        Glide.with(getContext()).load(title.getImageUrl()).into(viewHolder.titlePic);
+        viewHolder.titleText.setText(title.getTitle());
+        viewHolder.titleDescr.setText(title.getDescr());
+
+        return view;
+
+    }
+
+    public class ViewHolder{
+        TextView titleText;
+        TextView titleDescr;
+        ImageView titlePic;
+    }
+}
+
+</code></pre><p>这里还是一样的老套路，通过convertView 来缓存布局，通过类 ViewHolder 缓存控件实例，这样做，可以节省 50% 的效率，所以还是按照老套路走吧。</p>
+<p>接下来就是 Activity 文件 MainActivity.class：</p>
+<pre><code>public class MainActivity extends AppCompatActivity {
+    private static final int  ITEM_SOCIETY= 1;
+    private static final int  ITEM_COUNTY= 2;
+    private static final int  ITEM_INTERNATION= 3;
+    private static final int  ITEM_FUN= 4;
+    private static final int  ITEM_SPORT= 5;
+    private static final int  ITEM_NBA= 6;
+    private static final int  ITEM_FOOTBALL= 7;
+    private static final int  ITEM_TECHNOLOGY= 8;
+    private static final int  ITEM_WORK= 9;
+    private static final int  ITEM_APPLE= 10;
+    private static final int  ITEM_WAR= 11;
+    private static final int  ITEM_INTERNET= 12;
+    private static final int  ITEM_TREVAL= 13;
+    private static final int  ITEM_HEALTH= 14;
+    private static final int  ITEM_STRANGE= 15;
+    private static final int  ITEM_LOOKER= 16;
+    private static final int  ITEM_VR= 17;
+    private static final int  ITEM_IT= 18;
+
+
+    private List&lt;Title&gt; titleList = new ArrayList&lt;Title&gt;();
+    private ListView listView;
+    private TitleAdapter adapter;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
+    private SwipeRefreshLayout refreshLayout;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(&quot;社会新闻&quot;);
+
+        refreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_layout);
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        listView = (ListView)findViewById(R.id.list_view);
+        adapter = new TitleAdapter(this,R.layout.list_view_item, titleList);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            Intent intent = new Intent(MainActivity.this, ContentActivity.class);
+            @Override
+            public void onItemClick(AdapterView&lt;?&gt; parent, View view, int position, long id) {
+                Title title = titleList.get(position);
+                intent.putExtra(&quot;title&quot;,actionBar.getTitle());
+                intent.putExtra(&quot;uri&quot;,title.getUri());
+                startActivity(intent);
+            }
+        });
+
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView)findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_society);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.nav_society:
+                        handleCurrentPage(&quot;社会新闻&quot;,ITEM_SOCIETY);
+                        break;
+                    case R.id.nav_county:
+                        handleCurrentPage(&quot;国内新闻&quot;,ITEM_COUNTY);
+                        break;
+                    case R.id.nav_internation:
+                        handleCurrentPage(&quot;国际新闻&quot;,ITEM_INTERNATION);
+                        break;
+                    case R.id.nav_fun:
+                        handleCurrentPage(&quot;娱乐新闻&quot;,ITEM_FUN);
+                        break;
+                    case R.id.nav_sport:
+                        handleCurrentPage(&quot;体育新闻&quot;,ITEM_SPORT);
+                        break;
+                    case R.id.nav_nba:
+                        handleCurrentPage(&quot;NBA新闻&quot;,ITEM_NBA);
+                        break;
+                    case R.id.nav_football:
+                        handleCurrentPage(&quot;足球新闻&quot;,ITEM_FOOTBALL);
+                        break;
+                    case R.id.nav_technology:
+                        handleCurrentPage(&quot;科技新闻&quot;,ITEM_TECHNOLOGY);
+                        break;
+                    case R.id.nav_work:
+                        handleCurrentPage(&quot;创业新闻&quot;,ITEM_WORK);
+                        break;
+                    case R.id.nav_apple:
+                        handleCurrentPage(&quot;苹果新闻&quot;,ITEM_APPLE);
+                        break;
+                    case R.id.nav_war:
+                        handleCurrentPage(&quot;军事新闻&quot;,ITEM_WAR);
+                        break;
+                    case R.id.nav_internet:
+                        handleCurrentPage(&quot;移动互联&quot;,ITEM_INTERNET);
+                        break;
+                    case R.id.nav_travel:
+                        handleCurrentPage(&quot;旅游资讯&quot;,ITEM_TREVAL);
+                        break;
+                    case R.id.nav_health:
+                        handleCurrentPage(&quot;健康知识&quot;,ITEM_HEALTH);
+                        break;
+                    case R.id.nav_strange:
+                        handleCurrentPage(&quot;奇闻异事&quot;,ITEM_STRANGE);
+                        break;
+                    case R.id.nav_looker:
+                        handleCurrentPage(&quot;美女图片&quot;,ITEM_LOOKER);
+                        break;
+                    case R.id.nav_vr:
+                        handleCurrentPage(&quot;VR科技&quot;,ITEM_VR);
+                        break;
+                    case R.id.nav_it:
+                        handleCurrentPage(&quot;IT资讯&quot;,ITEM_IT);
+                        break;
+                    default:
+                        break;
+                }
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                int itemName = parseString((String)actionBar.getTitle());
+                requestNew(itemName);
+            }
+        });
+
+        requestNew(ITEM_SOCIETY);
+
+    }
+
+    /**
+     *  判断是否是当前页面,如果不是则 请求处理数据
+     */
+    private void handleCurrentPage(String text, int item){
+        ActionBar actionBar = getSupportActionBar();
+        if (!text.equals(actionBar.getTitle().toString())){
+            actionBar.setTitle(text);
+            requestNew(item);
+            refreshLayout.setRefreshing(true);
+        }
+    }
+
+
+    /**
+     * 请求处理数据
+     */
+    public void requestNew(int itemName){
+
+        // 根据返回到的 URL 链接进行申请和返回数据
+        String address = response(itemName);    // key
+        HttpUtil.sendOkHttpRequest(address, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, &quot;新闻加载失败&quot;, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String responseText = response.body().string();
+                final NewsList newlist = Utility.parseJsonWithGson(responseText);
+                final int code = newlist.code;
+                final String msg = newlist.msg;
+                if (code == 200){
+                    titleList.clear();
+                    for (News news:newlist.newsList){
+                        Title title = new Title(news.title,news.description,news.picUrl, news.url);
+                        titleList.add(title);
+                    }
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                            listView.setSelection(0);
+                            refreshLayout.setRefreshing(false);
+                        };
+                    });
+                }else{
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, &quot;数据错误返回&quot;,Toast.LENGTH_SHORT).show();
+                            refreshLayout.setRefreshing(false);
+                        }
+                    });
+                }
+
+
+
+            }
+        });
+
+
+    }
+
+    /**
+     * 输入不同的类型选项，返回对应的 URL 链接
+     */
+    private String response(int itemName){
+        String address = &quot;https://api.tianapi.com/social/?key=339a8b166f397f008236e596616a5f54&amp;num=50&amp;rand=1&quot;;
+        switch(itemName){
+            case ITEM_SOCIETY:
+                break;
+            case ITEM_COUNTY:
+                address = address.replaceAll(&quot;social&quot;,&quot;guonei&quot;);
+                break;
+            case ITEM_INTERNATION:
+                address = address.replaceAll(&quot;social&quot;,&quot;world&quot;);
+                break;
+            case ITEM_FUN:
+                address = address.replaceAll(&quot;social&quot;,&quot;huabian&quot;);
+                break;
+            case ITEM_SPORT:
+                address = address.replaceAll(&quot;social&quot;,&quot;tiyu&quot;);
+                break;
+            case ITEM_NBA:
+                address = address.replaceAll(&quot;social&quot;,&quot;nba&quot;);
+                break;
+            case ITEM_FOOTBALL:
+                address = address.replaceAll(&quot;social&quot;,&quot;football&quot;);
+                break;
+            case ITEM_TECHNOLOGY:
+                address = address.replaceAll(&quot;social&quot;,&quot;keji&quot;);
+                break;
+            case ITEM_WORK:
+                address = address.replaceAll(&quot;social&quot;,&quot;startup&quot;);
+                break;
+            case ITEM_APPLE:
+                address = address.replaceAll(&quot;social&quot;,&quot;apple&quot;);
+                break;
+            case ITEM_WAR:
+                address = address.replaceAll(&quot;social&quot;,&quot;military&quot;);
+                break;
+            case ITEM_INTERNET:
+                address = address.replaceAll(&quot;social&quot;,&quot;mobile&quot;);
+                break;
+            case ITEM_TREVAL:
+                address = address.replaceAll(&quot;social&quot;,&quot;travel&quot;);
+                break;
+            case ITEM_HEALTH:
+                address = address.replaceAll(&quot;social&quot;,&quot;health&quot;);
+                break;
+            case ITEM_STRANGE:
+                address = address.replaceAll(&quot;social&quot;,&quot;qiwen&quot;);
+                break;
+            case ITEM_LOOKER:
+                address = address.replaceAll(&quot;social&quot;,&quot;meinv&quot;);
+                break;
+            case ITEM_VR:
+                address = address.replaceAll(&quot;social&quot;,&quot;vr&quot;);
+                break;
+            case ITEM_IT:
+                address = address.replaceAll(&quot;social&quot;,&quot;it&quot;);
+                break;
+            default:
+        }
+        return address;
+    }
+
+    /**
+     * 通过 actionbar.getTitle() 的参数，返回对应的 ItemName
+     */
+    private int parseString(String text){
+        if (text.equals(&quot;社会新闻&quot;)){
+            return ITEM_SOCIETY;
+        }
+        if (text.equals(&quot;国内新闻&quot;)){
+            return ITEM_COUNTY;
+        }
+        if (text.equals(&quot;国际新闻&quot;)){
+            return ITEM_INTERNATION;
+        }
+        if (text.equals(&quot;娱乐新闻&quot;)){
+            return ITEM_FUN;
+        }
+        if (text.equals(&quot;体育新闻&quot;)){
+            return ITEM_SPORT;
+        }
+        if (text.equals(&quot;NBA新闻&quot;)){
+            return ITEM_NBA;
+        }
+        if (text.equals(&quot;足球新闻&quot;)){
+            return ITEM_FOOTBALL;
+        }
+        if (text.equals(&quot;科技新闻&quot;)){
+            return ITEM_TECHNOLOGY;
+        }
+        if (text.equals(&quot;创业新闻&quot;)){
+            return ITEM_WORK;
+        }
+        if (text.equals(&quot;苹果新闻&quot;)){
+            return ITEM_APPLE;
+        }
+        if (text.equals(&quot;军事新闻&quot;)){
+            return ITEM_WAR;
+        }
+        if (text.equals(&quot;移动互联&quot;)){
+            return ITEM_INTERNET;
+        }
+        if (text.equals(&quot;旅游资讯&quot;)){
+            return ITEM_TREVAL;
+        }
+        if (text.equals(&quot;健康知识&quot;)){
+            return ITEM_HEALTH;
+        }
+        if (text.equals(&quot;奇闻异事&quot;)){
+            return ITEM_STRANGE;
+        }
+        if (text.equals(&quot;美女图片&quot;)){
+            return ITEM_LOOKER;
+        }
+        if (text.equals(&quot;VR科技&quot;)){
+            return ITEM_VR;
+        }
+        if (text.equals(&quot;IT资讯&quot;)){
+            return ITEM_IT;
+        }
+        return ITEM_SOCIETY;
+    }
+
+    /**
+     * 对侧边栏按钮进行处理，打开侧边栏
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+            default:
+        }
+        return true;
+    }
+
+    /**
+     * 对返回键进行处理，如果侧边栏打开则关闭侧边栏，否则关闭 activity
+     */
+    @Override
+    public void onBackPressed() {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawers();
+        }else{
+            finish();
+        }
+    }
+}
+
+</code></pre><p>本文的代码量虽然很大，只是比较繁琐，因为需要根据点击的 ITEM 来对不同的 接口地址提出申请，大部分的函数功能都有进行注释，所以略过了</p>
+<pre><code>public void requestNew(int itemName){
+
+        // 根据返回到的 URL 链接进行申请和返回数据
+        String address = response(itemName);    // key
+        HttpUtil.sendOkHttpRequest(address, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, &quot;新闻加载失败&quot;, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String responseText = response.body().string();
+                final NewsList newlist = Utility.parseJsonWithGson(responseText);
+                final int code = newlist.code;
+                final String msg = newlist.msg;
+                if (code == 200){
+                    titleList.clear();
+                    for (News news:newlist.newsList){
+                        Title title = new Title(news.title,news.description,news.picUrl, news.url);
+                        titleList.add(title);
+                    }
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                            listView.setSelection(0);
+                            refreshLayout.setRefreshing(false);
+                        };
+                    });
+                }else{
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, &quot;数据错误返回&quot;,Toast.LENGTH_SHORT).show();
+                            refreshLayout.setRefreshing(false);
+                        }
+                    });
+                }
+
+
+
+            }
+        });
+
+
+    }
+</code></pre><ol>
+<li>外部调用时传入 itemName 参数，通过 response() 函数得到所需要请求数据的地址</li>
+<li>通过sendOkHttpRequest() 回调方法，在返回数据成功的 onResponse() 方法中使用 parseJsonWithGson() 方法获取对应的实体类</li>
+<li>将实体类中的数据添加到 Title对应中，将 Title 对象添加到 titleList 中，最后通过 runOnUiThread() 方法，切换到主线程提醒适配器进行数据更新。</li>
+</ol>
+<p>至此，主界面的代码逻辑都已经处理好了，还有 ListView 子项布局的点击事件处理：</p>
+<pre><code>listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            Intent intent = new Intent(MainActivity.this, ContentActivity.class);
+            @Override
+            public void onItemClick(AdapterView&lt;?&gt; parent, View view, int position, long id) {
+                Title title = titleList.get(position);
+                intent.putExtra(&quot;title&quot;,actionBar.getTitle());
+                intent.putExtra(&quot;uri&quot;,title.getUri());
+                startActivity(intent);
+            }
+        });
+</code></pre><p>在点击 ListView 子项布局时，会传入 标题栏文本 和 内容 URL</p>
+<p>文件 activity_content.xml：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;android.support.design.widget.CoordinatorLayout
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:background=&quot;@color/color_White&quot;&gt;
+
+    &lt;android.support.design.widget.AppBarLayout
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        &gt;
+
+        &lt;android.support.v7.widget.Toolbar
+            android:id=&quot;@+id/tool_bar&quot;
+            android:layout_width=&quot;match_parent&quot;
+            android:layout_height=&quot;?attr/actionBarSize&quot;
+            app:titleTextColor=&quot;@color/color_White&quot;
+            app:theme=&quot;@style/ThemeOverlay.AppCompat.Light&quot;
+            app:layout_scrollFlags=&quot;enterAlways|snap|scroll&quot;/&gt;
+
+    &lt;/android.support.design.widget.AppBarLayout&gt;
+
+
+    &lt;WebView
+        android:id=&quot;@+id/web_view&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;
+        app:layout_behavior=&quot;@string/appbar_scrolling_view_behavior&quot;/&gt;
+
+
+
+&lt;/android.support.design.widget.CoordinatorLayout&gt;
+
+</code></pre><p>如果了解了 activity_main.xml 的布局，这个布局也就没什么难度了，主要是新增了 WebView 控件，用来显示传入的 URL</p>
+<p>文件 ContentActivity.class：</p>
+<pre><code>public class ContentActivity extends AppCompatActivity {
+    private WebView webView;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_content);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
+        }
+
+        webView = (WebView)findViewById(R.id.web_view);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient());
+
+        String uri = getIntent().getStringExtra(&quot;uri&quot;);
+        String title = getIntent().getStringExtra(&quot;title&quot;);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(title);
+        webView.loadUrl(uri);
+
+    }
+
+    /**
+     * 点击返回键做了处理
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+        }
+        return true;
+    }
+}
+
+</code></pre><p>显示传入的 URL网址</p>
+<hr>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>到这里就结束了 ? 如果你认为都结束了，那你可以就需要面对打开应用之后马上闪退的情况了…….<strong>权限</strong> </p>
+<p>我们还没有对权限进行申请，在 AndroidManifest 文件中添加声明：</p>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;/&gt;
+</code></pre><p>不过个人还是建议把 权限的考虑放在最先的优先级，毕竟养成这个习惯，就可以专注于代码的 bug…………………..</p>
+<hr>
+<h3 id="运行界面"><a href="#运行界面" class="headerlink" title="运行界面"></a>运行界面</h3><p><center><img src="http://img.blog.csdn.net/20170506105823627?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWl3ZWkxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" srcset="/img/loading.gif" alt="这里写图片描述"><br>（主界面）</center></p>
+<p><center><img src="http://img.blog.csdn.net/20170506105847584?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWl3ZWkxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" srcset="/img/loading.gif" alt="这里写图片描述"><br>（侧边栏）</center></p>
+<p><center><img src="http://img.blog.csdn.net/20170506105908131?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWl3ZWkxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" srcset="/img/loading.gif" alt="这里写图片描述"><br>（内容界面）</center></p>
+<hr>
+<h3 id="运行-GIF"><a href="#运行-GIF" class="headerlink" title="运行 GIF"></a>运行 GIF</h3><p><center><img src="http://img.blog.csdn.net/20170506111744033?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWl3ZWkxMg==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" srcset="/img/loading.gif" alt="这里写图片描述"><br>（由于大小限制，所以就只能传这么大了）</center></p>
+<hr>
+<h3 id="完整代码下载地址"><a href="#完整代码下载地址" class="headerlink" title="完整代码下载地址"></a>完整代码下载地址</h3><p><a href="https://github.com/lentitude/NewsMD" target="_blank" rel="noopener">https://github.com/lentitude/NewsMD</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Android/">Android</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/APP/">APP</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                      <a href="/2017/12/22/做一款可用的天气-APP/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span class="hidden-mobile">做一款可用的天气 APP</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2017/12/20/指定某浏览器访问指定页面/">
+                        <span class="hidden-mobile">指定某浏览器访问指定页面</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "做一款新闻 APP&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
