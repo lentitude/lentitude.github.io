@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Shell 常用命令 | Hexo</title><meta name="keywords" content="Shell"><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="如下为常用的一些 Shell 命令， 如果平时遗忘的话， 可以参考下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shell 常用命令">
+<meta property="og:url" content="http://example.com/2019/08/01/Shell-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="如下为常用的一些 Shell 命令， 如果平时遗忘的话， 可以参考下。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2019-07-31T16:22:52.000Z">
+<meta property="article:modified_time" content="2020-03-26T05:03:57.000Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Shell">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2019/08/01/Shell-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Shell 常用命令',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2020-03-26 13:03:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">19</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">22</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">8</div></a></div></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Hexo</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Shell 常用命令</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2019-07-31T16:22:52.000Z" title="Created 2019-08-01 00:22:52">2019-08-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2020-03-26T05:03:57.000Z" title="Updated 2020-03-26 13:03:57">2020-03-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Shell/">Shell</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Shell 常用命令"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>如下为常用的一些 Shell 命令， 如果平时遗忘的话， 可以参考下。</p>
+<span id="more"></span>
+
+
+
+
+
+
+<ul>
+<li>ls 系列 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ls -a 除了一般文件之外， 隐藏文件也会进行显示 </span><br><span class="line">ls -l 显示更多的文件信息 </span><br><span class="line">ls -F 多了一些文字类型的符号 </span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>cd 系列 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd - 退回切换前的目录</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>mk 系列 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">主要关注两者 mkdir, rmdir 都支持-p 参数 </span><br><span class="line"></span><br><span class="line">mkdir 若指定路径的父目录不存在则一并创建 </span><br><span class="line">rmdir 删除指定路径的所有层次目录，如果文件夹里有内容，则不能用rmdir命令 </span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>cp 系列 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">复制一个文件到另一目录：cp 1.txt ../test2 </span><br><span class="line">复制一个文件到本目录并改名：cp 1.txt 2.txt </span><br><span class="line">复制一个文件夹a并改名为b：cp -r a b</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>mv 系列 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">将一个文件移动到另一个目录：mv 1.txt ../test1 </span><br><span class="line">将一个文件在本目录改名：mv 1.txt 2.txt </span><br><span class="line">将一个文件一定到另一个目录并改名：mv 1.txt ../test1/2.txt</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>rm 系列 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rm命令用于删除文件 </span><br><span class="line">–i：系统在删除文件之前会先询问确认，用户回车之后才会删除 </span><br><span class="line">–r：该参数支持目录删除，功能和rmdir命令相似。 </span><br><span class="line">–f：和-i参数相反，-f表示强制删除 </span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>du / df 系列 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">du命令可以显示目前的目录所占用的磁盘空间，df命令可以显示目前磁盘剩余空间。 </span><br><span class="line"></span><br><span class="line">如果du命令不加任何参数，那么返回的是整个磁盘的使用情况，如果后面加了目录的话，就是这个目录在磁盘上的使用情况。 </span><br><span class="line"></span><br><span class="line">du -hs 指定目录 查看指定目录的总大小 </span><br><span class="line">du -hs ./* 查看当前目录下的所有文件夹和文件的大小 </span><br><span class="line"></span><br><span class="line">这两个命令都支持-k，-m和-h参数，-k和-m类似，都表示显示单位，一个是k字节一个是兆字节，-h则表示human-readable，即友好可读的显示方式。 </span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>cat 系列 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cat file1 显示file1文件内容 </span><br><span class="line">cat file1 file2 依次显示file1,file2的内容 </span><br><span class="line">cat file1 file2 &gt; file3 把file1, file2的内容结合起来，再“重定向(&gt;)”到file3文件中。 </span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&gt;&quot;</span>是右重定向符，表示将左边命令结果当成右边命令的输入，注意：如果右侧文件是一个已存在文件，其原有内容将会被清空，而变成左侧命令输出内容。如果希望以追加方式写入，请改用<span class="string">&quot;&gt;&gt;&quot;</span>重定向符。 </span><br><span class="line"></span><br><span class="line">如果<span class="string">&quot;&gt;&quot;</span>左边没有指定文件，如： cat &gt;file1，将会等用户输入，输入完毕后再按[Ctrl]+[c]或[Ctrl]+[d]，就会将用户的输入内容写入file1。 </span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>more / less 系列 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">这两个命令用于查看文件，如果一个文件太长，显示内容超出一个屏幕，用cat命令只能看到最后的内容，用more和less两个命令可以分页查看。more指令可以使超过一页的文件内容分页暂停显示，用户按键后才继续显示下一页。而less除了有more的功能以外，还可以用方向键往上或往下的滚动文件，更方便浏览阅读。所以考虑可以直接使用 less </span><br><span class="line"></span><br><span class="line">空格键 向下滚动一屏; </span><br><span class="line">b 向上滚动一屏; </span><br><span class="line">d 向下滚动半屏; </span><br><span class="line">u 向上洋动半屏; </span><br><span class="line">w 可以指定显示哪行开始显示，是从指定数字的下一行显示;比如指定的是6，那就从第7行显示; </span><br><span class="line">g 跳到第一行; </span><br><span class="line">G 跳到最后一行; </span><br><span class="line">p n% 跳到n%，比如 10%，也就是说比整个文件内容的10%处开始显示; </span><br><span class="line">/pattern 搜索pattern ，比如 /MAIL表示在文件中搜索MAIL单词; </span><br><span class="line">v 调用vi编辑器; </span><br><span class="line">q 退出less </span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>wc 系列 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">该命令用于统计指定文件中的字节数、字数、行数。该命令各选项含义如下： </span><br><span class="line"></span><br><span class="line">-l 统计行数 </span><br><span class="line">-w 统计字数</span><br><span class="line">-c 统计字节数 </span><br><span class="line"></span><br><span class="line">这些选项可以组合使用。输出列的顺序和数目不受选项的顺序和数目的影响。总是按下述顺序显示并且每项最多一列。 </span><br><span class="line"></span><br><span class="line">行数、字数、字节数、文件名 </span><br><span class="line">如果命令行中没有文件名，则输出中不出现文件名。 例如： </span><br><span class="line"></span><br><span class="line">oracle@hjtest:~&gt; wc 1.txt 2.txt </span><br><span class="line">460 1679 16353 1.txt </span><br><span class="line">300 1095 10665 2.txt </span><br><span class="line">760 2774 27018 总用量 </span><br><span class="line"></span><br><span class="line">oracle@hjtest:~&gt; wc -l 1.txt </span><br><span class="line">460 1.txt </span><br><span class="line"></span><br><span class="line">缺省参数为-lcw，即wc file1 file2命令的执行结果与上面一样 </span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>grep 系列 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">很强大的正则搜索工具</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>管道 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">利用Linux所提供的管道符“|”将两个命令隔开，管道符左边命令的输出就会作为管道符右边命令的输入。连续使用管道意味着第一个命令的输出会作为第二个命令的输入，第二个命令的输出又会作为第三个命令的输入，依此类推。 </span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>cut 命令 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">选取某列: cut -d <span class="string">&#x27;分隔符&#x27;</span> -fm,n 文件位置 </span><br><span class="line">\<span class="comment"># 1. 按英文逗号&quot;,&quot;分割成4列 </span></span><br><span class="line">\<span class="comment"># 2. 选取第1、4两列 </span></span><br><span class="line"></span><br><span class="line">cut -d<span class="string">&#x27;,&#x27;</span> -f1,4 userprofile.csv </span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>sort 命令 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">\<span class="comment"># 按某列排序: </span></span><br><span class="line">\<span class="comment"># 1. 按英文逗号&quot;,&quot;分割成4列 </span></span><br><span class="line">\<span class="comment"># 2. 按第3列年龄，降序排列 </span></span><br><span class="line">\<span class="comment"># 3. 命令模板中的n, 表示按第几列排序，r表示倒排，没有r就是升序排列 </span></span><br><span class="line"></span><br><span class="line">sort -t<span class="string">&#x27;,&#x27;</span> -k3r userprofile.csv </span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>去重 </li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sort -u userprofile.csv </span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+<p>参考博客链接 </p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/gsliuruigang/p/6487084.html">https://www.cnblogs.com/gsliuruigang/p/6487084.html</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2019/08/01/Shell-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">http://example.com/2019/08/01/Shell-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Shell/">Shell</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2019/09/04/Clean-Code%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0%EF%BC%9A%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Clean Code第十四章-逐步改进</div></div></a></div><div class="next-post pull-right"><a href="/2019/07/09/Clean-Code%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E6%B3%A8%E8%A7%A3/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Clean Code第四章-注解</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">19</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">22</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">8</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/06/02/hello-world/" title="Hello World"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2021/06/02/hello-world/" title="Hello World">Hello World</a><time datetime="2021-06-01T18:16:51.662Z" title="Created 2021-06-02 02:16:51">2021-06-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/03/27/MY-LOVE/" title="MY LOVE"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MY LOVE"/></a><div class="content"><a class="title" href="/2020/03/27/MY-LOVE/" title="MY LOVE">MY LOVE</a><time datetime="2020-03-26T18:50:23.000Z" title="Created 2020-03-27 02:50:23">2020-03-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2019/09/04/Clean-Code%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0%EF%BC%9A%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/" title="Clean Code第十四章-逐步改进"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Clean Code第十四章-逐步改进"/></a><div class="content"><a class="title" href="/2019/09/04/Clean-Code%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0%EF%BC%9A%E9%80%90%E6%AD%A5%E6%94%B9%E8%BF%9B/" title="Clean Code第十四章-逐步改进">Clean Code第十四章-逐步改进</a><time datetime="2019-09-03T16:09:52.000Z" title="Created 2019-09-04 00:09:52">2019-09-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2019/08/01/Shell-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="Shell 常用命令"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Shell 常用命令"/></a><div class="content"><a class="title" href="/2019/08/01/Shell-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="Shell 常用命令">Shell 常用命令</a><time datetime="2019-07-31T16:22:52.000Z" title="Created 2019-08-01 00:22:52">2019-08-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2019/07/09/Clean-Code%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E6%B3%A8%E8%A7%A3/" title="Clean Code第四章-注解"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Clean Code第四章-注解"/></a><div class="content"><a class="title" href="/2019/07/09/Clean-Code%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E6%B3%A8%E8%A7%A3/" title="Clean Code第四章-注解">Clean Code第四章-注解</a><time datetime="2019-07-08T16:14:55.000Z" title="Created 2019-07-09 00:14:55">2019-07-09</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
